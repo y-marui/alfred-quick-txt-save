@@ -21,8 +21,9 @@ if [[ ! -f "$REPO_ROOT/requirements.txt" ]]; then
   exit 0
 fi
 
-if [[ "${USE_UV:-0}" == "1" ]]; then
+if [[ "${USE_UV:-0}" == "1" ]] || command -v uv >/dev/null 2>&1; then
   uv pip install \
+    --quiet \
     --requirement "$REPO_ROOT/requirements.txt" \
     --target "$VENDOR_DIR"
 else

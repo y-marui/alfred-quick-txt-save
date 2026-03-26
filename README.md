@@ -44,18 +44,7 @@ Copy text to your clipboard, then type `save` in Alfred and press Enter.
 
 ### Change save directory
 
-```
-save dir ~/Desktop
-save dir /Users/you/Documents/notes
-```
-
-The setting is persisted and used for all future saves.
-
-### View current settings
-
-```
-wf config
-```
+Open Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** and set the **Save Directory** field. Leave it blank to use `~/Downloads`.
 
 ## Quick Start (developers)
 

@@ -2,42 +2,53 @@
 
 from __future__ import annotations
 
+import os
 from datetime import datetime
 from pathlib import Path
 
-from alfred.config import Config
-
-_config = Config()
 _DEFAULT_DIR = Path.home() / "Downloads"
 _DEFAULT_PREFIX = "quick_save"
 _DEFAULT_EXT = ".txt"
 
 
 def get_save_dir() -> Path:
-    """Return the configured save directory, falling back to ~/Downloads."""
-    raw = _config.get("save_dir")
+    """Return the save directory.
+
+    Priority: Alfred workflow variable ``save_dir`` (set via Configuration
+    Builder or Environment Variables tab) → ``~/Downloads``.
+    """
+    raw = os.environ.get("save_dir", "").strip()
     if raw:
         return Path(raw).expanduser()
     return _DEFAULT_DIR
 
 
-def set_save_dir(path: str) -> Path:
-    """Persist *path* as the save directory and return the resolved Path."""
-    resolved = Path(path).expanduser()
-    _config.set("save_dir", str(resolved))
-    return resolved
-
-
 def resolve_save_path(filename: str | None = None) -> Path:
-    """Return the full save path for *filename*.
+    """Return a non-colliding save path for *filename*.
 
-    If *filename* is omitted or empty, generates ``quick_save_YYYYMMDD.txt``.
-    If *filename* has no extension, ``.txt`` is appended.
+    - No filename: generates ``quick_save_YYYYMMDD_HHMMSS.txt``.
+    - Filename without extension: appends ``.txt``.
+    - If the resolved path already exists, appends ``(1)``, ``(2)``, …
+      before the extension until a free name is found.
     """
     save_dir = get_save_dir()
     if not filename:
-        date_str = datetime.now().strftime("%Y%m%d")
-        filename = f"{_DEFAULT_PREFIX}_{date_str}{_DEFAULT_EXT}"
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"{_DEFAULT_PREFIX}_{ts}{_DEFAULT_EXT}"
     elif "." not in Path(filename).name:
         filename = filename + _DEFAULT_EXT
-    return save_dir / filename
+    return _unique_path(save_dir / filename)
+
+
+def _unique_path(path: Path) -> Path:
+    """Return *path* if it does not exist, otherwise ``stem (N).suffix``."""
+    if not path.exists():
+        return path
+    stem = path.stem
+    suffix = path.suffix
+    counter = 1
+    while True:
+        candidate = path.with_name(f"{stem} ({counter}){suffix}")
+        if not candidate.exists():
+            return candidate
+        counter += 1

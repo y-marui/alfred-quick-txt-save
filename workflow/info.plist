@@ -29,7 +29,7 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<true/>
+				<false/>
 			</dict>
 		</array>
 	</dict>
@@ -182,6 +182,28 @@
 	</array>
 	<key>readme</key>
 	<string></string>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>description</key>
+			<string>Directory where text files are saved. Leave blank to use ~/Downloads.</string>
+			<key>label</key>
+			<string>Save Directory</string>
+			<key>placeholder</key>
+			<string>~/Downloads</string>
+			<key>required</key>
+			<false/>
+			<key>type</key>
+			<string>input</string>
+			<key>variable</key>
+			<string>save_dir</string>
+		</dict>
+	</array>
+	<key>variables</key>
+	<dict>
+		<key>save_dir</key>
+		<string></string>
+	</dict>
 	<key>version</key>
 	<string>0.1.0</string>
 	<key>webaddress</key>

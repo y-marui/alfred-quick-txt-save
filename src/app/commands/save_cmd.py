@@ -1,34 +1,28 @@
 """save command - save clipboard or selected text to a .txt file.
 
 Usage in Alfred:  save [filename]
-                  save dir <path>
 
 Examples:
-  save              → saves to ~/Downloads/quick_save_20260326.txt
+  save              → saves to ~/Downloads/quick_save_20260326_143012.txt
   save notes        → saves to ~/Downloads/notes.txt
   save notes.md     → saves to ~/Downloads/notes.md
-  save dir ~/Desktop  → sets save directory to ~/Desktop
+
+Save directory is configured via Alfred Preferences →
+  Workflows → [Quick Text Save] → Configure Workflow.
 """
 
 from __future__ import annotations
 
 from alfred.logger import get_logger
 from alfred.response import item, output
-from app.services.save_service import get_save_dir, resolve_save_path, set_save_dir
+from app.services.save_service import get_save_dir, resolve_save_path
 
 log = get_logger(__name__)
 
 
 def handle(args: str) -> None:
-    """Show save destination preview or update the save directory."""
+    """Show save destination preview."""
     log.debug("save command: args=%r", args)
-
-    parts = args.strip().split(None, 1)
-    subcommand = parts[0].lower() if parts else ""
-
-    if subcommand == "dir":
-        _handle_set_dir(parts[1] if len(parts) > 1 else "")
-        return
 
     filename = args.strip() or None
     path = resolve_save_path(filename)
@@ -45,36 +39,9 @@ def handle(args: str) -> None:
             ),
             item(
                 title=f"Save directory: {save_dir}",
-                subtitle='Type "save dir <path>" to change',
+                subtitle="Change via Alfred Preferences → Workflows → Configure Workflow",
                 valid=False,
                 uid="save-dir-info",
             ),
-        ]
-    )
-
-
-def _handle_set_dir(path_arg: str) -> None:
-    """Set the save directory."""
-    if not path_arg.strip():
-        save_dir = get_save_dir()
-        output(
-            [
-                item(
-                    title=f"Current save directory: {save_dir}",
-                    subtitle='Type "save dir <path>" to change',
-                    valid=False,
-                )
-            ]
-        )
-        return
-
-    resolved = set_save_dir(path_arg.strip())
-    output(
-        [
-            item(
-                title=f"Save directory set to {resolved}",
-                subtitle=str(resolved),
-                valid=False,
-            )
         ]
     )

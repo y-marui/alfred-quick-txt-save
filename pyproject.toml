@@ -30,9 +30,8 @@ build-backend = "setuptools.build_meta"
 # ---------------------------------------------------------------------------
 # uv
 # ---------------------------------------------------------------------------
-[tool.uv]
-# When using uv, install dev extras via: uv sync --extra dev
-dev-dependencies = []
+[dependency-groups]
+dev = []
 
 [tool.setuptools.packages.find]
 # Packages are under src/ - explicit config avoids flat-layout auto-discovery issues

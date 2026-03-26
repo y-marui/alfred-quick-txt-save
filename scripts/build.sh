@@ -20,9 +20,9 @@ DIST_DIR="$REPO_ROOT/dist"
 BUILD_DIR="$REPO_ROOT/.build"
 
 # Select Python interpreter based on USE_UV flag
-if [[ "${USE_UV:-0}" == "1" ]]; then
+if [[ "${USE_UV:-0}" == "1" ]] || command -v uv >/dev/null 2>&1; then
   PYTHON="uv run python"
-  PIP_INSTALL="uv pip install"
+  PIP_INSTALL="uv pip install --quiet"
 else
   PYTHON="python3"
   PIP_INSTALL="pip3 install --quiet --upgrade"

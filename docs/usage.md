@@ -35,36 +35,11 @@ A macOS notification confirms the save. If the clipboard is empty, nothing is wr
 
 ### Change save directory
 
-```
-save dir <path>
-save dir
-```
+Open Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow**.
 
-Sets the directory where files are saved. The setting is persisted across Alfred sessions.
+Set the **Save Directory** field to any path (e.g. `~/Desktop`). Leave it blank to use `~/Downloads`.
 
-**Examples:**
-
-```
-save dir ~/Desktop           → save to ~/Desktop from now on
-save dir ~/Documents/notes   → save to ~/Documents/notes from now on
-save dir                     → show current save directory
-```
-
-### View all settings
-
-```
-wf config
-```
-
-Shows all stored configuration values (including `save_dir`).
-
-### Reset settings
-
-```
-wf config reset
-```
-
-Clears all settings. The save directory reverts to `~/Downloads`.
+The current save directory is always shown as the second line when `save` is invoked.
 
 ## Tips
 

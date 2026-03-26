@@ -44,18 +44,7 @@ save notes.md     → ~/Downloads/notes.md
 
 ### 保存先ディレクトリを変更
 
-```
-save dir ~/Desktop
-save dir /Users/you/Documents/notes
-```
-
-設定は永続化され、以降のすべての保存に使用されます。
-
-### 現在の設定を確認
-
-```
-wf config
-```
+Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** を開き、**Save Directory** フィールドに保存先を入力します。空白のままにすると `~/Downloads` が使用されます。
 
 ## クイックスタート（開発者）
 
