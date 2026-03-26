@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.example.alfred-workflow-template</string>
+	<string>com.y-marui.alfred-quick-txt-save</string>
 	<key>connections</key>
 	<dict>
 		<key>36381EAF-63DA-4000-AED5-AF6DAF671396</key>
@@ -19,15 +19,28 @@
 				<false/>
 			</dict>
 		</array>
+		<key>A2B3C4D5-E6F7-8901-ABCD-EF2345678901</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B3C4D5E6-F7A8-9012-BCDE-F34567890123</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<true/>
+			</dict>
+		</array>
 	</dict>
 	<key>createdby</key>
-	<string>Your Name</string>
+	<string>y-marui</string>
 	<key>description</key>
-	<string>Alfred Workflow Template</string>
+	<string>Save clipboard text to a .txt file</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Workflow Template</string>
+	<string>Quick Text Save</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -96,12 +109,82 @@
 			<key>uid</key>
 			<string>D90DBB99-FC05-4BE8-B79B-C4DFD1FE55F9</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>save</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>3</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Resolving path…</string>
+				<key>script</key>
+				<string>python3 scripts/entry.py "save $1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Save clipboard text to a file</string>
+				<key>title</key>
+				<string>Quick Text Save</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>A2B3C4D5-E6F7-8901-ABCD-EF2345678901</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>python3 scripts/save_text.py "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>B3C4D5E6-F7A8-9012-BCDE-F34567890123</string>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
 	<key>version</key>
 	<string>0.1.0</string>
 	<key>webaddress</key>
-	<string>https://github.com/yourname/your-workflow</string>
+	<string>https://github.com/y-marui/alfred-quick-txt-save</string>
 </dict>
 </plist>

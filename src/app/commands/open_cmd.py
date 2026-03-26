@@ -12,9 +12,9 @@ log = get_logger(__name__)
 
 # Example named shortcuts - replace with your own
 _SHORTCUTS: dict[str, str] = {
-    "repo": "https://github.com/yourname/your-workflow",
-    "docs": "https://github.com/yourname/your-workflow/tree/main/docs",
-    "issues": "https://github.com/yourname/your-workflow/issues",
+    "repo": "https://github.com/y-marui/alfred-quick-txt-save",
+    "docs": "https://github.com/y-marui/alfred-quick-txt-save/tree/main/docs",
+    "issues": "https://github.com/y-marui/alfred-quick-txt-save/issues",
 }
 
 

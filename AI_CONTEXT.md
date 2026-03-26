@@ -138,8 +138,8 @@ Alfred Script Filter のレスポンス（JSON items）に適用するルール:
 
 OSS プロジェクトのため、以下の方式を採用:
 
-- **Buy Me a Coffee**: https://www.buymeacoffee.com/YOUR_USERNAME
-- **GitHub Sponsors**: リポジトリの Sponsors 機能（`.github/FUNDING.yml` 設定済み。`YOUR_USERNAME` を実際の値に置き換えること）
+- **Buy Me a Coffee**: https://www.buymeacoffee.com/y.marui
+- **GitHub Sponsors**: https://github.com/sponsors/y-marui
 
 README.md の末尾に Buy Me a Coffee バッジを掲載する。
 マネタイズを本格検討する場合は `MONETIZATION.md` を作成し、このファイルに概要を追記する。

@@ -11,8 +11,8 @@
 ## Setup
 
 ```bash
-git clone https://github.com/yourname/your-workflow
-cd your-workflow
+git clone https://github.com/y-marui/alfred-quick-txt-save
+cd alfred-quick-txt-save
 make install
 ```
 
@@ -21,6 +21,9 @@ make install
 ### Simulate Alfred locally
 
 ```bash
+make run Q="save"
+make run Q="save mynotes"
+make run Q="save dir ~/Desktop"
 make run Q="search foo"
 make run Q="open repo"
 make run Q="config"

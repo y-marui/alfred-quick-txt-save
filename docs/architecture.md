@@ -20,16 +20,22 @@ src/app/core.py                 ← Application orchestrator
   ▼
 src/alfred/router.py            ← Command dispatcher
   │
+  ├─ save    → src/app/commands/save_cmd.py
   ├─ search  → src/app/commands/search.py
   ├─ open    → src/app/commands/open_cmd.py
   ├─ config  → src/app/commands/config_cmd.py
   └─ help    → src/app/commands/help_cmd.py
                 │
                 ▼
-            src/app/services/   ← Business logic + caching
+            src/app/services/   ← Business logic (path resolution, config)
                 │
                 ▼
             src/app/clients/    ← External API / IO
+
+Alfred (Run Script node)
+  │  arg = resolved file path
+  ▼
+workflow/scripts/save_text.py   ← reads pbpaste, writes file, notifies
 ```
 
 ## Layers
@@ -73,11 +79,18 @@ Alfred sends the full query string to the script.
 The router splits it into `<command> <args>`:
 
 ```
+"save"            →  command="save",    args=""
+"save notes"      →  command="save",    args="notes"
+"save dir ~/D"    →  command="save",    args="dir ~/D"
 "search foo bar"  →  command="search",  args="foo bar"
 "open repo"       →  command="open",    args="repo"
 "config"          →  command="config",  args=""
 "foo bar"         →  command="search",  args="foo bar" (default fallback)
 ```
+
+Note: the `save` keyword has its own Script Filter node in `info.plist` with the
+script `python3 scripts/entry.py "save $1"`, so Alfred passes the filename argument
+already prefixed with `"save "` to the router.
 
 ## Dependency Flow
 

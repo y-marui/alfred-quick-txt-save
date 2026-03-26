@@ -2,63 +2,85 @@
 
 ## Quick Start
 
-Open Alfred and type `wf` followed by a space.
+Copy text to your clipboard, then open Alfred and type `save`.
 
 ## Commands
 
-### Search (default)
+### Save clipboard text
 
 ```
-wf <query>
-wf search <query>
+save
+save <filename>
 ```
 
-Type any query to search. Press Enter to open the result.
+Saves the current clipboard contents to a file.
+
+- No argument: generates `quick_save_YYYYMMDD.txt` in the configured save directory
+- With filename (no extension): appends `.txt` automatically
+- With filename and extension: uses as-is
+
+**Examples:**
+
+```
+save                → ~/Downloads/quick_save_20260326.txt
+save meeting        → ~/Downloads/meeting.txt
+save meeting.md     → ~/Downloads/meeting.md
+```
 
 | Key | Action |
 |---|---|
-| ↩ Enter | Open result |
-| ⌘C | Copy result URL |
+| ↩ Enter | Save clipboard to the shown path |
 
-### Open
+A macOS notification confirms the save. If the clipboard is empty, nothing is written.
+
+### Change save directory
 
 ```
-wf open <name>
+save dir <path>
+save dir
 ```
 
-Open a named shortcut.
+Sets the directory where files are saved. The setting is persisted across Alfred sessions.
 
-Available shortcuts: `repo`, `docs`, `issues`
+**Examples:**
 
-### Config
+```
+save dir ~/Desktop           → save to ~/Desktop from now on
+save dir ~/Documents/notes   → save to ~/Documents/notes from now on
+save dir                     → show current save directory
+```
+
+### View all settings
 
 ```
 wf config
+```
+
+Shows all stored configuration values (including `save_dir`).
+
+### Reset settings
+
+```
 wf config reset
 ```
 
-View current settings or reset all configuration.
-
-### Help
-
-```
-wf help
-```
-
-Show all available commands.
+Clears all settings. The save directory reverts to `~/Downloads`.
 
 ## Tips
 
-- The workflow remembers your most-used results (Alfred learns from usage).
-- Results are cached for 5 minutes to minimize API calls.
-- Use `⌘,` in Alfred to access Workflow Preferences.
+- The second line shown under each `save` result is the full destination path.
+- The save directory is created automatically if it does not exist.
+- To quickly save selected text from any app: copy it first (⌘C), then run `save`.
 
 ## Troubleshooting
 
-**No results appear**
+**Nothing was saved**
+- Check that the clipboard is not empty before running `save`.
+
+**File saved to wrong directory**
+- Run `save dir <path>` to update the save directory.
+- Run `wf config` to verify the current `save_dir` setting.
+
+**Workflow not responding**
 - Check Alfred's debugger: open Alfred → ⌘D
 - Check logs: `~/Library/Logs/Alfred/Workflow/<bundle-id>.log`
-
-**Results are stale**
-- The cache TTL is 5 minutes. Wait for it to expire, or clear manually:
-  `wf config reset`

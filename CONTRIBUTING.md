@@ -10,8 +10,8 @@ Thank you for contributing!
 ## Development setup
 
 ```bash
-git clone https://github.com/yourname/alfred-workflow-template
-cd alfred-workflow-template
+git clone https://github.com/y-marui/alfred-quick-txt-save
+cd alfred-quick-txt-save
 make install
 ```
 
