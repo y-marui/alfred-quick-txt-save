@@ -181,29 +181,50 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>Save clipboard text to a .txt file with one keystroke.
+
+## Usage
+
+  save              → ~/Downloads/quick_save_YYYYMMDD_HHMMSS.txt
+  save notes        → ~/Downloads/notes.txt
+  save notes.md     → ~/Downloads/notes.md
+
+Copy text to your clipboard, type "save" in Alfred, and press Enter.
+If a file with the same name already exists, (1), (2), … is appended automatically.
+
+## Configuration
+
+Open "Configure Workflow" to set the save directory (default: ~/Downloads).
+
+## Requirements
+
+Python 3.9+</string>
 	<key>userconfigurationconfig</key>
 	<array>
 		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>~/Downloads</string>
+				<key>filtermode</key>
+				<integer>1</integer>
+				<key>placeholder</key>
+				<string>~/Downloads</string>
+				<key>required</key>
+				<false/>
+			</dict>
 			<key>description</key>
 			<string>Directory where text files are saved. Leave blank to use ~/Downloads.</string>
 			<key>label</key>
 			<string>Save Directory</string>
-			<key>placeholder</key>
-			<string>~/Downloads</string>
-			<key>required</key>
-			<false/>
 			<key>type</key>
-			<string>input</string>
+			<string>filepicker</string>
 			<key>variable</key>
 			<string>save_dir</string>
 		</dict>
 	</array>
 	<key>variables</key>
-	<dict>
-		<key>save_dir</key>
-		<string></string>
-	</dict>
+	<dict/>
 	<key>version</key>
 	<string>0.1.0</string>
 	<key>webaddress</key>
