@@ -6,6 +6,7 @@
 > クリップボードまたは選択テキストをワンキーで .txt ファイルに保存する Alfred ワークフロー。
 
 [![CI](https://github.com/y-marui/alfred-quick-txt-save/actions/workflows/ci.yml/badge.svg)](https://github.com/y-marui/alfred-quick-txt-save/actions/workflows/ci.yml)
+[![Charter Check](https://github.com/y-marui/alfred-quick-txt-save/actions/workflows/dev-charter-check.yml/badge.svg)](https://github.com/y-marui/alfred-quick-txt-save/actions/workflows/dev-charter-check.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## 特徴
