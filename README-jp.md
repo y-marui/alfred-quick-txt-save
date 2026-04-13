@@ -15,6 +15,7 @@ AI支援ソフトウェアプロジェクトのための共有開発憲章。
 
 | ファイル | 内容 |
 |---|---|
+| [CHARTER_INDEX.md](CHARTER_INDEX.md) | 憲章ドキュメントのインデックス（トピック → ファイル対応表） |
 | [PRINCIPLES.md](PRINCIPLES.md) | 開発哲学・デザイン・アーキテクチャ原則 |
 | [CODE_STYLE.md](CODE_STYLE.md) | コードスタイル |
 | [AI_COLLABORATION_RULES.md](AI_COLLABORATION_RULES.md) | AI 協働ルールと役割分担 |
@@ -32,6 +33,8 @@ AI支援ソフトウェアプロジェクトのための共有開発憲章。
 | [topics/GITHUB_CONTRIBUTING.md](topics/GITHUB_CONTRIBUTING.md) | Issue・PR・CONTRIBUTING.md・PRテンプレート・準CLA（OSS向け） |
 | [topics/TEMPLATE_README_GUIDELINES.md](topics/TEMPLATE_README_GUIDELINES.md) | GitHub テンプレートリポジトリの README 設計規約（開発環境・言語・LICENSE・必須セクション） |
 | [topics/PROJECT_README_GUIDELINES.md](topics/PROJECT_README_GUIDELINES.md) | テンプレートから作成したプロジェクトの README 整備手順 |
+| [topics/PYTHON_DEV_ENV.md](topics/PYTHON_DEV_ENV.md) | Python 開発環境構成（pyenv・uv・ruff・mypy・pytest） |
+| [topics/PYTHON_CLI.md](topics/PYTHON_CLI.md) | Python CLI 実装方針（typer・pydantic-settings・XDG設定） |
 
 ## How to Use
 
@@ -41,6 +44,20 @@ AI支援ソフトウェアプロジェクトのための共有開発憲章。
 
 構成仕様は [AI_TOOL_SETUP.md](AI_TOOL_SETUP.md) を参照。
 
+## Quick Install
+
+プロジェクトのルートで実行してください：
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/y-marui/dev-charter/main/scripts/install.sh)
+```
+
+スクリプトが git subtree のセットアップを自動化し、Claude Code が利用可能であれば
+初回セットアップ（INSTALL_CHECKLIST）の起動まで案内します。
+
+> **Note:** インストール先やブランチを変更する場合は環境変数で指定できます：
+> `CHARTER_PREFIX=path/to/charter bash <(curl -fsSL .../install.sh)`
+
 ## Install (git subtree)
 
 ```
@@ -49,7 +66,11 @@ git fetch dev-charter
 git subtree add --prefix=docs/dev-charter dev-charter main --squash
 ```
 
-インストール後、[インストールチェックリスト](INSTALL_CHECKLIST.md) に従って対応してください。
+インストール後、以下のプロンプトを AI ツールに貼り付けてください：
+
+```
+docs/dev-charter/INSTALL_CHECKLIST.md を実行して
+```
 
 ## Update
 
@@ -60,7 +81,29 @@ git remote add dev-charter https://github.com/y-marui/dev-charter
 git subtree pull --prefix=docs/dev-charter dev-charter main --squash
 ```
 
-更新後、[更新チェックリスト](UPDATE_CHECKLIST.md) に従って対応してください。
+> **Note（テンプレートリポジトリから作成したプロジェクト）:**
+> GitHub テンプレートはファイルのみコピーし git 履歴を引き継がないため、`git subtree pull` は失敗します。
+> `check-charter.yml` ワークフローがこのケースを自動検出して対処します。
+> 手動で更新する場合は `git subtree pull` の代わりに以下を実行してください：
+> ```bash
+> git remote add dev-charter https://github.com/y-marui/dev-charter || true
+> git fetch dev-charter
+> SPLIT=$(git rev-parse dev-charter/main)
+> git rm -rf docs/dev-charter/
+> mkdir -p docs/dev-charter/
+> git archive dev-charter/main | tar -x -C docs/dev-charter/
+> git add docs/dev-charter/
+> git commit -m "Squashed 'docs/dev-charter/' content from commit ${SPLIT}
+>
+> git-subtree-dir: docs/dev-charter
+> git-subtree-split: ${SPLIT}"
+> ```
+
+更新後、以下のプロンプトを AI ツールに貼り付けてください：
+
+```
+docs/dev-charter/UPDATE_CHECKLIST.md を実行して
+```
 
 ## Makefile Helper
 

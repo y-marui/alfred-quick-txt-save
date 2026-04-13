@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Check (or update) VERSION to match today's date (local) or the last commit date (CI).
+# Check (or update) VERSION to match today's date (local) or the last non-merge commit date (CI).
 #
 # Usage:
 #   pre-commit run check-version-date            # local: compares to today
-#   CI=1 pre-commit run --all-files              # CI: compares to git log -1 date
+#   CI=1 pre-commit run --all-files              # CI: compares to git log -1 --no-merges date
 #   UPDATE=1 bash scripts/check-version-date.sh  # write expected date to VERSION
 set -euo pipefail
 
 if [ -n "${CI:-}" ]; then
-  EXPECTED=$(git log -1 --format="%ad" --date=format:"%Y-%m-%d")
+  EXPECTED=$(git log -1 --no-merges --format="%ad" --date=format:"%Y-%m-%d")
 else
   EXPECTED=$(date +%Y-%m-%d)
 fi
