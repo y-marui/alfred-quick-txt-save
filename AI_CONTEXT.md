@@ -26,6 +26,8 @@ scripts/        ← build.sh / dev.sh / release.sh / vendor.sh
 
 ## Applied Charter Principles
 
+憲章参照: docs/dev-charter/CHARTER_INDEX.md でトピックを特定してから該当ファイルのみ読む
+
 ### AIコンテキスト優先順位（AI_CONTEXT_HIERARCHY）
 
 1. タスクコンテキスト（Issue / Pull Request）
@@ -72,6 +74,24 @@ scripts/        ← build.sh / dev.sh / release.sh / vendor.sh
 #### 作業スタンス
 - 大きな変更前に方針を説明してから着手する
 - **不要な依存追加禁止** — 既存の依存で解決できないか先に検討する
+
+#### Charter Lookup
+不明点が憲章に関係する場合は**全ファイルを検索せず**、以下の手順で参照する：
+
+1. `docs/dev-charter/CHARTER_INDEX.md` を読み、該当トピックのファイルを特定する
+2. 特定したファイル（原則 1〜2 件）のみを読む
+3. 参照後にユーザーへ提案・確認を行う
+
+推測で断定せず、憲章を参照してからユーザーに提案・質問する。
+
+#### GitHub Operations
+Issue を作成する場合は、必ずリポジトリオーナーを `assignee` に設定する。
+
+```
+gh issue create --title "..." --body "..." --assignee @me
+```
+
+> `@me` はトークンのオーナーに解決されるため、ユーザー名のハードコードは不要。
 
 ### 言語ポリシー（LANGUAGE_POLICY）
 
