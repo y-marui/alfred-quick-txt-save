@@ -15,6 +15,7 @@ and development rules used across projects.
 
 | File | Description |
 |---|---|
+| [CHARTER_INDEX.md](CHARTER_INDEX.md) | Charter document index (topic-to-file lookup table for efficient reference) |
 | [PRINCIPLES.md](PRINCIPLES.md) | Development philosophy, design and architecture principles |
 | [CODE_STYLE.md](CODE_STYLE.md) | Code style guide |
 | [AI_COLLABORATION_RULES.md](AI_COLLABORATION_RULES.md) | AI collaboration rules and role assignments |
@@ -32,6 +33,8 @@ and development rules used across projects.
 | [topics/GITHUB_CONTRIBUTING.md](topics/GITHUB_CONTRIBUTING.md) | Issue, PR, CONTRIBUTING.md, PR template, and Quasi-CLA (for OSS) |
 | [topics/TEMPLATE_README_GUIDELINES.md](topics/TEMPLATE_README_GUIDELINES.md) | GitHub template repository README guidelines (environment, language, LICENSE, required sections) |
 | [topics/PROJECT_README_GUIDELINES.md](topics/PROJECT_README_GUIDELINES.md) | README setup guide for projects created from a template |
+| [topics/PYTHON_DEV_ENV.md](topics/PYTHON_DEV_ENV.md) | Python development environment (pyenv, uv, ruff, mypy, pytest) |
+| [topics/PYTHON_CLI.md](topics/PYTHON_CLI.md) | Python CLI implementation (typer, pydantic-settings, XDG config) |
 
 ## How to Use
 
@@ -41,6 +44,20 @@ and development rules used across projects.
 
 See [AI_TOOL_SETUP.md](AI_TOOL_SETUP.md) for the structure spec.
 
+## Quick Install
+
+Run from your project root:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/y-marui/dev-charter/main/scripts/install.sh)
+```
+
+The script automates the git subtree setup and, if Claude Code is available,
+guides you through the initial setup (INSTALL_CHECKLIST).
+
+> **Note:** To customize the install path or branch, use environment variables:
+> `CHARTER_PREFIX=path/to/charter bash <(curl -fsSL .../install.sh)`
+
 ## Install (git subtree)
 
 ```
@@ -49,7 +66,11 @@ git fetch dev-charter
 git subtree add --prefix=docs/dev-charter dev-charter main --squash
 ```
 
-After installing, follow the [Install Checklist](INSTALL_CHECKLIST.md).
+After installing, paste the following prompt into your AI tool:
+
+```
+Run docs/dev-charter/INSTALL_CHECKLIST.md
+```
 
 ## Update
 
@@ -60,7 +81,29 @@ git remote add dev-charter https://github.com/y-marui/dev-charter
 git subtree pull --prefix=docs/dev-charter dev-charter main --squash
 ```
 
-After updating, follow the [Update Checklist](UPDATE_CHECKLIST.md).
+> **Note (projects created from a template repository):**
+> GitHub templates copy files only — git history is not carried over — so `git subtree pull` will fail.
+> The `check-charter.yml` workflow detects this automatically and handles it.
+> For manual updates, use the following instead of `git subtree pull`:
+> ```bash
+> git remote add dev-charter https://github.com/y-marui/dev-charter || true
+> git fetch dev-charter
+> SPLIT=$(git rev-parse dev-charter/main)
+> git rm -rf docs/dev-charter/
+> mkdir -p docs/dev-charter/
+> git archive dev-charter/main | tar -x -C docs/dev-charter/
+> git add docs/dev-charter/
+> git commit -m "Squashed 'docs/dev-charter/' content from commit ${SPLIT}
+>
+> git-subtree-dir: docs/dev-charter
+> git-subtree-split: ${SPLIT}"
+> ```
+
+After updating, paste the following prompt into your AI tool:
+
+```
+Run docs/dev-charter/UPDATE_CHECKLIST.md
+```
 
 ## Makefile helper
 

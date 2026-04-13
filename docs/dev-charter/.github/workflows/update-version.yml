@@ -17,7 +17,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -47,3 +47,11 @@ jobs:
           git add VERSION
           git commit -m "chore: update VERSION to ${{ steps.check.outputs.expected }}"
           git push
+
+      - name: Re-trigger CI after VERSION update
+        if: steps.check.outputs.updated == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh workflow run ci.yml --ref "${{ github.head_ref }}"
