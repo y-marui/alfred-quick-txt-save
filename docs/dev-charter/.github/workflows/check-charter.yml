@@ -2,7 +2,7 @@
 #
 # For setup instructions, see "Version Check (CI)" in README.md.
 
-name: check-charter
+name: Dev Charter
 
 on:
   workflow_call:
@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Checkout (full history required for git subtree)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -93,11 +93,25 @@ jobs:
 
           git checkout -B "${BRANCH}" origin/main
 
-          git subtree pull \
-            --prefix="${PREFIX}" \
-            dev-charter main \
-            --squash \
-            -m "chore: update dev-charter to ${REMOTE}"
+          if ! git subtree pull \
+              --prefix="${PREFIX}" \
+              dev-charter main \
+              --squash \
+              -m "chore: update dev-charter to ${REMOTE}"; then
+            # Fallback: template project (no subtree history)
+            # Clean up any partial state from the failed attempt
+            git reset --hard HEAD
+            git clean -fd "${PREFIX}/"
+
+            SPLIT=$(git rev-parse dev-charter/main)
+            git rm -rf "${PREFIX}/"
+            mkdir -p "${PREFIX}"
+            git archive dev-charter/main | tar -x -C "${PREFIX}/"
+            git add "${PREFIX}/"
+
+            git commit -m "$(printf "Squashed '%s/' content from commit %s\n\ngit-subtree-dir: %s\ngit-subtree-split: %s" \
+              "${PREFIX}" "${SPLIT}" "${PREFIX}" "${SPLIT}")"
+          fi
 
           git push origin "${BRANCH}" --force-with-lease
 

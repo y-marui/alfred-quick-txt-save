@@ -15,7 +15,7 @@ Read each changed file and update the project to reflect the changes.
 Common areas affected by file:
 - AI_TOOL_SETUP.md                     → update AI context files (AI_CONTEXT.md and agent config files)
 - topics/PROJECT_README_GUIDELINES.md  → update the project README
-- topics/GITHUB_SETTINGS.md            → apply repository settings via gh commands
+- topics/GITHUB_SETTINGS.md            → apply repository settings (gh commands if available, otherwise GitHub UI)
 - topics/CI_POLICY.md                  → review and update .github/workflows/
 - SECURITY_POLICY.md                   → review security hook and scan configuration
 - LEGAL_POLICY.md                      → verify license files
@@ -49,7 +49,7 @@ Common areas affected by file:
 ファイル別の主な影響箇所：
 - AI_TOOL_SETUP.md                    → AI コンテキストファイルを更新（AI_CONTEXT.md・各ツール設定ファイル）
 - topics/PROJECT_README_GUIDELINES.md → プロジェクトの README を更新
-- topics/GITHUB_SETTINGS.md           → gh コマンドでリポジトリ設定を適用
+- topics/GITHUB_SETTINGS.md           → リポジトリ設定を適用（gh コマンドが使える場合はコマンドで、使えない場合は GitHub UI から）
 - topics/CI_POLICY.md                 → .github/workflows/ を確認・更新
 - SECURITY_POLICY.md                  → セキュリティフック・スキャン設定を確認
 - LEGAL_POLICY.md                     → ライセンスファイルを確認
