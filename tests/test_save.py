@@ -45,6 +45,36 @@ class TestSaveService:
         monkeypatch.setenv("save_dir", "")
         assert save_service.get_save_dir() == Path.home() / "Downloads"
 
+    def test_file_prefix_env_var(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("file_prefix", "note")
+        path = save_service.resolve_save_path()
+        assert path.name.startswith("note_")
+
+    def test_file_prefix_empty_uses_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("file_prefix", "")
+        path = save_service.resolve_save_path()
+        assert path.name.startswith("quick_save_")
+
+    def test_file_ext_env_var(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("file_ext", ".md")
+        path = save_service.resolve_save_path()
+        assert path.suffix == ".md"
+
+    def test_file_ext_env_var_without_dot(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("file_ext", "md")
+        path = save_service.resolve_save_path()
+        assert path.suffix == ".md"
+
+    def test_file_ext_empty_uses_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("file_ext", "")
+        path = save_service.resolve_save_path()
+        assert path.suffix == ".txt"
+
+    def test_file_ext_applied_to_custom_name(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("file_ext", ".md")
+        path = save_service.resolve_save_path("notes")
+        assert path.name == "notes.md"
+
     def test_resolve_save_path_uses_env_dir(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
