@@ -71,7 +71,7 @@
 				<key>runningsubtext</key>
 				<string>Loading…</string>
 				<key>script</key>
-				<string>python3 scripts/entry.py "$1"</string>
+				<string>if [ "${use_uv}" = "1" ] &amp;&amp; command -v uv &gt;/dev/null 2&gt;&amp;1; then uv run python scripts/entry.py "$1"; else python3 scripts/entry.py "$1"; fi</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -137,7 +137,7 @@
 				<key>runningsubtext</key>
 				<string>Resolving path…</string>
 				<key>script</key>
-				<string>python3 scripts/entry.py "save $1"</string>
+				<string>if [ "${use_uv}" = "1" ] &amp;&amp; command -v uv &gt;/dev/null 2&gt;&amp;1; then uv run python scripts/entry.py "save $1"; else python3 scripts/entry.py "save $1"; fi</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -222,9 +222,62 @@ Python 3.9+</string>
 			<key>variable</key>
 			<string>save_dir</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>quick_save</string>
+				<key>placeholder</key>
+				<string>quick_save</string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Prefix for auto-generated filenames. Combined with timestamp: prefix_YYYYMMDD_HHMMSS.txt</string>
+			<key>label</key>
+			<string>Filename Prefix</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>file_prefix</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>.txt</string>
+				<key>placeholder</key>
+				<string>.txt</string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Default file extension when no extension is specified. Include the leading dot (e.g. .txt, .md).</string>
+			<key>label</key>
+			<string>Default Extension</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>file_ext</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict/>
+			<key>description</key>
+			<string>Use uv to run Python scripts when uv is available. Applies to scripts that use non-standard libraries.</string>
+			<key>label</key>
+			<string>Use uv (if available)</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>use_uv</string>
+		</dict>
 	</array>
 	<key>variables</key>
-	<dict/>
+	<dict>
+		<key>use_uv</key>
+		<string>1</string>
+	</dict>
 	<key>version</key>
 	<string>0.1.0</string>
 	<key>webaddress</key>
