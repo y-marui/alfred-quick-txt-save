@@ -262,7 +262,10 @@ Python 3.9+</string>
 		</dict>
 		<dict>
 			<key>config</key>
-			<dict/>
+			<dict>
+				<key>default</key>
+				<true/>
+			</dict>
 			<key>description</key>
 			<string>Use uv to run Python scripts when uv is available. Applies to scripts that use non-standard libraries.</string>
 			<key>label</key>
@@ -274,10 +277,7 @@ Python 3.9+</string>
 		</dict>
 	</array>
 	<key>variables</key>
-	<dict>
-		<key>use_uv</key>
-		<string>1</string>
-	</dict>
+	<dict/>
 	<key>version</key>
 	<string>0.1.0</string>
 	<key>webaddress</key>
