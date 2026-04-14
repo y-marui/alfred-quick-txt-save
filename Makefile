@@ -1,33 +1,13 @@
-.PHONY: help install hooks lint format typecheck test test-cov vendor build release run clean update-charter
+.PHONY: help install hooks lint format typecheck test test-cov vendor build deploy release run clean update-charter
 
-# ---------------------------------------------------------------------------
-# Python environment selector
-#
-#   USE_UV=0  (default) → global python3 / pip3
-#   USE_UV=1            → uv managed virtual environment
-#
-# Examples:
-#   make test            # uses global python3
-#   make test USE_UV=1   # uses uv venv
-# ---------------------------------------------------------------------------
-USE_UV ?= 0
-
-ifeq ($(USE_UV),1)
-  PYTHON := uv run python
-  RUN    := uv run
-else
-  PYTHON := python3
-  RUN    :=
-endif
-
-# Export so child shell scripts (vendor.sh, build.sh, dev.sh) inherit the flag
-export USE_UV
+PYTHON := uv run python
+RUN    := uv run
 
 # Default target
 help:
 	@echo "Alfred Workflow Template - Development Commands"
 	@echo ""
-	@echo "  make install     Install dev dependencies"
+	@echo "  make install     Install dev dependencies (uv sync --group dev)"
 	@echo "  make hooks       Install pre-commit hooks"
 	@echo "  make lint        Run ruff linter"
 	@echo "  make format      Auto-format with ruff"
@@ -36,34 +16,22 @@ help:
 	@echo "  make test-cov    Run tests with coverage report"
 	@echo "  make vendor      Install runtime deps into workflow/vendor/"
 	@echo "  make build       Build .alfredworkflow package"
+	@echo "  make deploy      Build and install into Alfred"
 	@echo "  make release     Create GitHub Release (requires git tag)"
 	@echo "  make run Q=''    Simulate Alfred with query Q"
 	@echo "  make clean       Remove build artifacts"
 	@echo "  make update-charter  Pull latest dev-charter via git subtree"
-	@echo ""
-	@echo "  USE_UV=0 (default) → global python3 / pip3"
-	@echo "  USE_UV=1           → uv managed virtual environment"
 	@echo ""
 
 # ---------------------------------------------------------------------------
 # Setup
 # ---------------------------------------------------------------------------
 install:
-ifeq ($(USE_UV),1)
-	uv sync --extra dev
+	uv sync --group dev
 	@$(MAKE) hooks
-else
-	pip3 install --quiet -e ".[dev]"
-	@command -v pre-commit >/dev/null 2>&1 && $(MAKE) hooks || true
-endif
 
 hooks:
-ifeq ($(USE_UV),1)
 	uv run pre-commit install
-else
-	pip3 install --quiet pre-commit
-	pre-commit install
-endif
 
 # ---------------------------------------------------------------------------
 # Code quality
@@ -95,6 +63,9 @@ vendor:
 
 build: vendor
 	./scripts/build.sh
+
+deploy: build
+	@open dist/*.alfredworkflow
 
 release:
 	./scripts/release.sh
