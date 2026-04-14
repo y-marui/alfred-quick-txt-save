@@ -14,14 +14,6 @@ Repository = "https://github.com/y-marui/alfred-quick-txt-save"
 "Bug Tracker" = "https://github.com/y-marui/alfred-quick-txt-save/issues"
 Changelog = "https://github.com/y-marui/alfred-quick-txt-save/blob/main/CHANGELOG.md"
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.0",
-    "pytest-cov>=4.0",
-    "ruff>=0.4.0",
-    "mypy>=1.9",
-    "pre-commit>=3.7",
-]
 
 [build-system]
 requires = ["setuptools>=68"]
@@ -31,7 +23,13 @@ build-backend = "setuptools.build_meta"
 # uv
 # ---------------------------------------------------------------------------
 [dependency-groups]
-dev = []
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4.0",
+    "mypy>=1.9",
+    "pre-commit>=3.7",
+]
 
 [tool.setuptools.packages.find]
 # Packages are under src/ - explicit config avoids flat-layout auto-discovery issues
