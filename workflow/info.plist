@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.y-marui.alfred-quick-txt-save</string>
+	<string>com.github.y-marui.alfred-quick-txt-save</string>
 	<key>connections</key>
 	<dict>
 		<key>36381EAF-63DA-4000-AED5-AF6DAF671396</key>
@@ -33,10 +33,12 @@
 			</dict>
 		</array>
 	</dict>
+	<key>category</key>
+	<string>Files &amp; Dirs</string>
 	<key>createdby</key>
-	<string>y-marui</string>
+	<string>Yukihiro Marui</string>
 	<key>description</key>
-	<string>Save clipboard text to a .txt file</string>
+	<string>Save selected text or clipboard content as a file instantly using Alfred</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
