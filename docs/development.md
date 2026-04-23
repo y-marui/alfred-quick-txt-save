@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - macOS (required for Alfred)
-- Python 3.9+
+- Python 3.11+
 - Alfred 5 with Powerpack
 - `jq` (optional, for pretty-printed dev output): `brew install jq`
 - `gh` CLI (required for releases): `brew install gh`
