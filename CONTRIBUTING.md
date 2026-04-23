@@ -9,6 +9,8 @@ Thank you for contributing!
 
 ## Development setup
 
+See [DEVELOPING.md](DEVELOPING.md) for full setup instructions.
+
 ```bash
 git clone https://github.com/y-marui/alfred-quick-txt-save
 cd alfred-quick-txt-save
@@ -61,5 +63,5 @@ refactor: simplify router dispatch logic
 - [ ] `make test` passes
 - [ ] `make build` succeeds
 - [ ] New commands have tests
-- [ ] `docs/usage.md` updated if user-facing changes
+- [ ] `docs/specification.md` updated if user-facing changes
 - [ ] `CHANGELOG.md` entry added under `[Unreleased]`

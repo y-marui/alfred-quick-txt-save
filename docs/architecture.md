@@ -2,122 +2,66 @@
 
 ## Overview
 
-This workflow uses a layered architecture to keep Alfred-specific code isolated
-from business logic, making it easy to test and extend.
+Alfred Quick Text Save is a layered Alfred 5 workflow. Alfred's Script Filter passes a query
+to `entry.py`, which dispatches it through an SDK router to pure-Python command handlers.
+Handlers resolve paths via services and return Script Filter JSON; a Run Script node writes the file.
 
-```
-Alfred
-  │  keyword + query
-  ▼
-workflow/scripts/entry.py       ← Alfred boundary (UI layer)
-  │
-  ▼
-src/alfred/safe_run.py          ← Exception safety wrapper
-  │
-  ▼
-src/app/core.py                 ← Application orchestrator
-  │
-  ▼
-src/alfred/router.py            ← Command dispatcher
-  │
-  ├─ save    → src/app/commands/save_cmd.py
-  ├─ search  → src/app/commands/search.py
-  ├─ open    → src/app/commands/open_cmd.py
-  ├─ config  → src/app/commands/config_cmd.py
-  └─ help    → src/app/commands/help_cmd.py
-                │
-                ▼
-            src/app/services/   ← Business logic (path resolution, config)
-                │
-                ▼
-            src/app/clients/    ← External API / IO
+## Entry Points
 
-Alfred (Run Script node)
-  │  arg = resolved file path
-  ▼
-workflow/scripts/save_text.py   ← reads pbpaste, writes file, notifies
-```
+- `workflow/scripts/entry.py` — Alfred executes this file directly (Script Filter node). Sets `sys.path`, calls `safe_run(main)`. No business logic.
+- `workflow/scripts/save_text.py` — Alfred executes this file (Run Script node) after the user confirms. Reads clipboard (`pbpaste`), writes to the resolved path, sends macOS notification.
+
+## Directory Structure
+
+| Directory | Role |
+|---|---|
+| `src/alfred/` | Alfred SDK: response builder, router, cache, config, logger, safe_run |
+| `src/app/commands/` | One module per Alfred command. Each exports `handle(args: str) -> None` |
+| `src/app/services/` | Business logic: path resolution, config read/write |
+| `src/app/clients/` | External IO wrappers (HTTP, system calls) |
+| `workflow/` | Alfred package: `info.plist`, scripts, icon |
+| `tests/` | pytest test suite (pure Python, no Alfred dependency) |
+| `scripts/` | Shell scripts: `build.sh`, `dev.sh`, `release.sh`, `vendor.sh` |
 
 ## Layers
 
-### UI Layer (`workflow/`)
+```
+Alfred
+  │  query string
+  ▼
+workflow/scripts/entry.py          ← Alfred boundary (UI layer)
+  │
+  ▼
+src/alfred/safe_run.py             ← exception safety
+  │
+  ▼
+src/app/core.py                    ← wires router to commands
+  │
+  ▼
+src/alfred/router.py               ← dispatches to command handlers
+  │
+  ├─ save   → src/app/commands/save_cmd.py
+  ├─ open   → src/app/commands/open_cmd.py
+  ├─ config → src/app/commands/config_cmd.py
+  ├─ help   → src/app/commands/help_cmd.py
+  └─ search → src/app/commands/search.py (default fallback)
+              │
+              ▼
+          src/app/services/        ← business logic (path, config)
+              │
+              ▼
+          src/app/clients/         ← IO / external APIs
+```
 
-- `scripts/entry.py`: The only file Alfred executes directly.
-  - Sets up `sys.path` (vendor + src)
-  - Calls `safe_run(main)`
-  - No business logic here
+Dependency direction: `commands → services → clients`. Layers must not be skipped.
 
-### Alfred SDK (`src/alfred/`)
+## Key Dependencies
 
-Thin helpers that abstract Alfred-specific behavior.
-These are **not** application logic — they wrap Alfred's environment.
-
-| Module | Purpose |
+| Library / Module | Purpose |
 |---|---|
-| `response.py` | Build and emit Script Filter JSON |
-| `router.py` | Parse query → dispatch to command |
-| `safe_run.py` | Catch exceptions → show error item |
-| `cache.py` | TTL disk cache via `alfred_workflow_cache` |
-| `config.py` | Persistent config via `alfred_workflow_data` |
-| `logger.py` | File logger to `~/Library/Logs/Alfred/Workflow/` |
-
-### Application Layer (`src/app/`)
-
-Pure Python business logic — no Alfred dependency.
-This layer can be tested without Alfred and run from the CLI.
-
-| Directory | Purpose |
-|---|---|
-| `commands/` | One module per Alfred command. Each has `handle(args: str) -> None` |
-| `services/` | Business logic coordinating between commands and clients |
-| `clients/` | Thin HTTP/IO wrappers for external APIs |
-| `core.py` | Wires router to commands — the dependency injection point |
-
-## Query Parsing
-
-Alfred sends the full query string to the script.
-The router splits it into `<command> <args>`:
-
-```
-"save"            →  command="save",    args=""
-"save notes"      →  command="save",    args="notes"
-"save dir ~/D"    →  command="save",    args="dir ~/D"
-"search foo bar"  →  command="search",  args="foo bar"
-"open repo"       →  command="open",    args="repo"
-"config"          →  command="config",  args=""
-"foo bar"         →  command="search",  args="foo bar" (default fallback)
-```
-
-Note: the `save` keyword has its own Script Filter node in `info.plist` with the
-script `python3 scripts/entry.py "save $1"`, so Alfred passes the filename argument
-already prefixed with `"save "` to the router.
-
-## Dependency Flow
-
-```
-commands → services → clients → external APIs
-         ↘
-           alfred SDK (response, cache, config, logger)
-```
-
-Commands depend on services, not clients directly.
-Services own caching logic.
-Clients are stateless HTTP wrappers.
-
-## Packaging
-
-At build time (`make build`):
-
-```
-.build/               ← temporary build directory
-├── info.plist        ← version synced from pyproject.toml
-├── icon.png
-├── scripts/
-│   └── entry.py
-├── src/              ← copied from repo src/
-│   ├── alfred/
-│   └── app/
-└── vendor/           ← pip install -r requirements.txt -t vendor/
-```
-
-The entire `.build/` directory is zipped to `dist/<name>-<version>.alfredworkflow`.
+| `src/alfred/response.py` | Script Filter JSON output |
+| `src/alfred/cache.py` | TTL disk cache via `alfred_workflow_cache` |
+| `src/alfred/config.py` | Persistent config via `alfred_workflow_data` |
+| `pytest` | Test suite |
+| `ruff` | Linter + formatter |
+| `mypy` | Static type checking |
