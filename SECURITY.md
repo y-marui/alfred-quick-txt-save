@@ -17,22 +17,13 @@ for confirmed vulnerabilities.
 
 ## Scope
 
-This is a workflow template. Common areas of concern:
+This is an Alfred workflow. Common areas of concern:
 
 - **Credential handling** — never store secrets in `workflow/info.plist` or
   committed files; use Alfred's built-in encrypted keychain instead.
 - **Input sanitization** — Alfred query strings are passed to `entry.py`; they
   must not be interpolated into shell commands or SQL without sanitization.
 - **Dependency security** — vendored packages in `workflow/vendor/` should be
-  kept up-to-date; dependabot monitors `.github/workflows/` automatically.
+  kept up-to-date; Dependabot monitors `.github/workflows/` automatically.
 
-## Automated security checks
-
-| Hook | What it detects |
-|---|---|
-| `gitleaks` (`.gitleaks.toml`) | Hardcoded secrets, API keys, local absolute paths |
-| `detect-private-key` | SSH/TLS private key headers |
-| `no-commit-dotenv` | `.env` files accidentally staged |
-| `check-added-large-files` | Files over 500 KB |
-
-These hooks run on every commit (pre-commit) and in CI (`security` job).
+For development security checks (pre-commit hooks, CI security job), see [DEVELOPING.md](DEVELOPING.md).

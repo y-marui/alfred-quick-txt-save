@@ -11,19 +11,21 @@
 AI はタスク開始時に以下の順で参照する:
 
 1. README.md（概要・セットアップ）
-2. docs/development.md（ビルド・実装規約・命名規則）
+2. DEVELOPING.md（ビルド・実装規約・命名規則）
 
 必要に応じて以下を参照する（順不同）:
 - CONTRIBUTING.md（PR・Issue ルール）
 - docs/architecture.md（モジュール・コンポーネント構造）
 - docs/file-map.md（ファイルレベルの依存関係 ※情報が足りない・古い場合は適宜探索し、追記・更新する）
+- docs/specification.md（コマンド・設定・動作仕様）
+- docs/ui-design.md（Alfred Script Filter UI 設計）
 
 ---
 
 ## Project Overview
 
 Alfred 5 Script Filter ワークフロー用の OSS テンプレート。
-Python 3.9+、レイヤードアーキテクチャ、CI/CD 完備。
+Python 3.11+、レイヤードアーキテクチャ、CI/CD 完備。
 対象: 個人〜3人規模の開発チーム。ライセンス: MIT。
 
 ```
