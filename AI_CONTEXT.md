@@ -92,6 +92,14 @@ scripts/        ← build.sh / dev.sh / release.sh / vendor.sh
 - **不要な依存追加禁止** — 既存の依存で解決できないか先に検討する
 - **ドキュメント同期** — 仕様・ルール・構成に変更が生じたとき、変更と同じ作業内で関連ドキュメントを更新する。対象は `docs/` 内のファイルに限らず、`AI_CONTEXT.md`・`README.md` 等のルートファイルも含む
 
+#### dev-charter 変更ルール
+
+`docs/dev-charter/` 配下のファイルは**直接編集しない**。
+
+- 変更が必要な場合は dev-charter リポジトリ本体に Issue を立て、`git subtree pull` でアップデートを取り込む
+- `git subtree pull` によるアップデートのみ許可する
+- プロジェクト固有のルールは、プロジェクトの `AI_CONTEXT.md` または専用ファイルに記載する
+
 #### Charter Lookup
 不明点が憲章に関係する場合は**全ファイルを検索せず**、以下の手順で参照する：
 
@@ -178,7 +186,7 @@ OSS プロジェクトのため、以下の方式を採用:
 - **Buy Me a Coffee**: https://www.buymeacoffee.com/y.marui
 - **GitHub Sponsors**: https://github.com/sponsors/y-marui
 
-README.md の末尾に Buy Me a Coffee バッジを掲載する。
+dev-charter バッジの後に GitHub Sponsors と Buy Me a Coffee のバッジを掲載する（サポートセクションは設けずバッジで代替）。
 マネタイズを本格検討する場合は `MONETIZATION.md` を作成し、このファイルに概要を追記する。
 
 ### ローカライゼーション（LOCALIZATION_POLICY）
