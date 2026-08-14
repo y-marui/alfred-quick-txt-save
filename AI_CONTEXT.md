@@ -243,15 +243,9 @@ Alfred ワークフローは現時点では UI テキストのローカライゼ
 
 ## AI Tool Assignments
 
-| ツール | 担当 |
-|---|---|
-| Claude Code | プロジェクト立ち上げ・大規模変更・アーキテクチャ設計・リファクタリング |
-| GitHub Copilot | バグ修正・細かな実装補助・単体テスト作成 |
-| Gemini CLI | プライバシーポリシー作成・更新 / ストア説明文 / 審査用ドキュメント / プロジェクト全体のドキュメント管理 |
-
-### AI並用時のルール
-- Claude Code 作業中は Copilot 提案を**参考程度**に（盲目的に受け入れない）
-- Copilot の提案がプロジェクト規約に反する場合は無視し、Claude Code でレビュー後採用
+- **使用ツール**: Claude Code、GitHub Copilot、Gemini CLI
+- **標準担当の正本**: `docs/dev-charter/AI_COLLABORATION_RULES.md` の「AI Tool Responsibilities」と「Rules for Multi-AI Usage」
+- **プロジェクト固有の上書き**: なし
 
 ---
 
