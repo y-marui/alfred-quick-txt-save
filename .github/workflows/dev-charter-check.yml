@@ -1,20 +1,20 @@
 name: Dev Charter
 
 on:
+  pull_request:
   push:
     branches: [main]
-    paths:
-      - ".github/workflows/dev-charter-check.yml"
-      - "docs/dev-charter/VERSION"
   schedule:
     - cron: "37 2 * * 4"  # Every Thu 02:37 UTC
   workflow_dispatch:
 
 jobs:
   check:
+    if: github.actor != 'dependabot[bot]'
     uses: y-marui/dev-charter/.github/workflows/check-charter.yml@main
     with:
       prefix: docs/dev-charter
     permissions:
       contents: write
       pull-requests: write
+      actions: read
