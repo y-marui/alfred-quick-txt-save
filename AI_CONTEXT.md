@@ -235,7 +235,7 @@ Alfred ワークフローは現時点では UI テキストのローカライゼ
 
 ### 依存管理
 
-- ランタイム依存 → `requirements.txt` → `workflow/vendor/` にベンダリング（`make vendor`）
+- ランタイム依存 → `vendor-requirements.txt` → `workflow/vendor/` にベンダリング（`make vendor`）
 - 開発依存 → `pyproject.toml [project.optional-dependencies.dev]`
 - ランタイム依存は最小限に保つ（パッケージ追加 = ワークフローサイズ増加）
 
