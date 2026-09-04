@@ -51,12 +51,14 @@ scripts/        ← build.sh / dev.sh / release.sh / vendor.sh
 3. 開発憲章（`docs/dev-charter/`）
 4. グローバルコンテキスト
 
-### 開発原則（PRINCIPLES）
+### ソフトウェア設計原則（SOFTWARE_DESIGN_PRINCIPLES）
 
 #### 基本哲学
 - **ローカルファースト** — Alfred ワークフローはオフラインで動作することを前提にする
 - **インフラ最小化** — サーバーレス、外部依存なし（vendor/ に完結）
 - **小さく始める** — 機能追加は必要性が確認されてから
+
+### 開発原則（PRINCIPLES）
 
 #### コード設計
 - **変更範囲は必要最小限** — Over-engineering しない
