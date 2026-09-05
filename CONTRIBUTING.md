@@ -14,7 +14,7 @@ See [DEVELOPING.md](DEVELOPING.md) for full setup instructions.
 ```bash
 git clone https://github.com/y-marui/alfred-quick-txt-save
 cd alfred-quick-txt-save
-make install
+go build ./...
 ```
 
 ## Making changes
@@ -25,19 +25,17 @@ make install
 
 ```bash
 make lint
-make typecheck
 make test
-make build
+make build-workflow
 ```
 
-4. Test in Alfred: `make build` → double-click the `.alfredworkflow`
+4. Test in Alfred: `make build-workflow` → double-click the `.alfredworkflow`
 5. Open a PR using the template
 
 ## Code style
 
-- ruff + black enforced by CI
-- Type hints required on all public functions
-- Keep runtime dependencies minimal (they're vendored)
+- `gofmt` + `go vet` enforced by CI
+- Keep the dependency-free `go.mod` — avoid adding third-party packages
 
 ## Commit guidelines
 
@@ -50,18 +48,17 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
 feat: add clipboard copy action
-fix: cache miss on special characters in query
-chore: update ruff to 0.5.0
+fix: collision suffix off-by-one
+chore: update Go toolchain to 1.28
 docs: add examples to usage.md
-refactor: simplify router dispatch logic
+refactor: simplify quicksavecmd dispatch logic
 ```
 
 ## Pull Request checklist
 
 - [ ] `make lint` passes
-- [ ] `make typecheck` passes
 - [ ] `make test` passes
-- [ ] `make build` succeeds
+- [ ] `make build-workflow` succeeds
 - [ ] New commands have tests
 - [ ] `docs/specification.md` updated if user-facing changes
 - [ ] `CHANGELOG.md` entry added under `[Unreleased]`

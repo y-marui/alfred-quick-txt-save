@@ -21,9 +21,10 @@ This is an Alfred workflow. Common areas of concern:
 
 - **Credential handling** — never store secrets in `workflow/info.plist` or
   committed files; use Alfred's built-in encrypted keychain instead.
-- **Input sanitization** — Alfred query strings are passed to `entry.py`; they
-  must not be interpolated into shell commands or SQL without sanitization.
-- **Dependency security** — vendored packages in `workflow/vendor/` should be
-  kept up-to-date; Dependabot monitors `.github/workflows/` automatically.
+- **Input sanitization** — Alfred query strings are passed to
+  `cmd/quick-txt-save-alfred`; they must not be interpolated into shell
+  commands without sanitization.
+- **Dependency security** — this project has no third-party Go dependencies
+  by design; Dependabot monitors `.github/workflows/` automatically.
 
 For development security checks (pre-commit hooks, CI security job), see [DEVELOPING.md](DEVELOPING.md).

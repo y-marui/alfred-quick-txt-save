@@ -16,44 +16,21 @@ Functional specification and behavior definition for alfred-quick-txt-save.
 | `save <name>` (no extension) | Saves as `<name>{ext}` in save directory |
 | `save <name>.<ext>` | Saves as `<name>.<ext>` in save directory |
 
-- If clipboard is empty, nothing is written and no error is raised.
+- If clipboard is empty, nothing is written and a "Clipboard is empty" notification is posted.
 - If the resolved path already exists, appends `(1)`, `(2)`, … before the extension until a free name is found.
-- A macOS notification confirms the save.
-- The Script Filter (entry.py) previews the resolved path. The actual write happens in `save_text.py` after Alfred passes the path as arg.
-
-### `wf config` — View / Reset Configuration
-
-**Trigger:** `wf config` or `wf config reset`.
-
-| Input | Result |
-|---|---|
-| `wf config` | Shows current configuration values |
-| `wf config reset` | Clears all stored configuration |
-
-### `open` — Open Resources
-
-**Trigger:** `wf open <target>`
-
-| Target | Action |
-|---|---|
-| `repo` | Opens the GitHub repository in the default browser |
-
-### `search` — Default Fallback
-
-Any unrecognized keyword is routed to `search`. Used as the default dispatch fallback.
-
-### `help` — Show Help
-
-**Trigger:** `wf help`
-
-Lists available commands with brief descriptions.
+- A macOS notification confirms the save, or reports the failure if the write itself fails
+  (e.g. an unwritable save directory).
+- The Script Filter (`list` subcommand) previews the resolved path. The actual write happens
+  in the `write` subcommand after Alfred passes the path as `arg` and the clipboard's text as
+  the `text` variable (via an Arguments and Variables node using Alfred's `{clipboard}`
+  placeholder — the binary itself never reads the pasteboard).
 
 ---
 
 ## Configuration
 
-Configuration is stored via Alfred's `alfred_workflow_data` directory and managed through
-Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow**.
+Configuration is managed through Alfred Preferences → Workflows → Quick Text Save →
+**Configure Workflow**, and read by the binary as environment variables.
 
 | Variable | Description | Default |
 |---|---|---|
@@ -88,23 +65,41 @@ quick_save_20260326_143012 (2).txt
 ## Data Flow
 
 ```
-Alfred (Script Filter node)
-  │  keyword + query string
+Alfred (Script Filter node, keyword "save")
+  │  query string (filename, or empty)
   ▼
-workflow/scripts/entry.py     ← sets sys.path, calls safe_run(main)
+cmd/quick-txt-save-alfred list [filename]
   │
   ▼
-src/app/core.py               ← router.dispatch(query)
+internal/quicksavecmd.List()      ← resolves path, returns Script Filter items
   │
   ▼
-src/alfred/router.py          ← splits "save notes" → command="save", args="notes"
-  │
-  ▼
-src/app/commands/save_cmd.py  ← resolves path, returns Script Filter items
-  │
+Alfred (Arguments and Variables node)
+  │  argument = {query} (the resolved path, passed through unchanged)
+  │  sets variable text = {clipboard}
   ▼
 Alfred (Run Script node)
-  │  arg = resolved file path
+  │  arg = resolved file path; env var text = clipboard's plain text
   ▼
-workflow/scripts/save_text.py ← reads pbpaste, writes file, sends macOS notification
+cmd/quick-txt-save-alfred write <path>
+  │
+  ▼
+internal/quicksave.SaveText()     ← writes file, sends macOS notification (or reports failure)
 ```
+
+## Error Handling
+
+- Any panic in the `list` subcommand's dispatch is recovered in
+  `cmd/quick-txt-save-alfred/main.go`, which emits a single `Workflow Error` result item —
+  a Script Filter step must always print valid JSON.
+- The `write` subcommand has no JSON contract (it's a Run Script action); an internal error is
+  printed to stderr and the process exits non-zero.
+
+## Constraints
+
+- Script Filter response time target: **< 100 ms** (compiled Go binary, no I/O beyond a
+  single `os.Stat`/env var read per invocation).
+- All Script Filter output must go through `scriptfilter.Response.Write()` — never
+  `fmt.Print*` directly.
+- `cmd/quick-txt-save-alfred` contains no business logic; it only parses `os.Args`, recovers
+  panics (for `list`), and writes what `internal/quicksavecmd`/`internal/quicksave` return.

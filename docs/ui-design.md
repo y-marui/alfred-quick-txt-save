@@ -4,7 +4,7 @@ Alfred Quick Text Save presents results through Alfred's Script Filter JSON form
 
 ## Script Filter Items
 
-All items are returned via `alfred.response.output()` as a list of Alfred Script Filter items.
+All items are returned via `scriptfilter.Response.Write()` as a list of Alfred Script Filter items.
 Unicode emoji are not used in `title` or `subtitle` per UI guidelines (use ASCII symbols or no decoration).
 
 ### `save` command
@@ -25,19 +25,12 @@ A second informational item shows the current save directory:
 | `valid` | `false` (not selectable) |
 | `uid` | `save-dir-info` |
 
-### `wf config` command
-
-Shows current configuration key-value pairs as individual items, each with:
-- `title`: setting name and value
-- `valid`: `false` (display only)
-
-A "Reset" action item with `valid: true` triggers `wf config reset`.
-
 ### Error items
 
-When an unhandled exception occurs, `safe_run()` catches it and returns a single error item:
-- `title`: `Error: <exception type>`
-- `subtitle`: exception message
+When the `list` subcommand's dispatch panics, `cmd/quick-txt-save-alfred/main.go` recovers it
+and returns a single error item:
+- `title`: `Workflow Error`
+- `subtitle`: panic message
 - `valid`: `false`
 
 ## Icon

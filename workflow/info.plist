@@ -6,11 +6,11 @@
 	<string>com.github.y-marui.alfred-quick-txt-save</string>
 	<key>connections</key>
 	<dict>
-		<key>36381EAF-63DA-4000-AED5-AF6DAF671396</key>
+		<key>A2B3C4D5-E6F7-8901-ABCD-EF2345678901</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>D90DBB99-FC05-4BE8-B79B-C4DFD1FE55F9</string>
+				<string>D4E5F6A7-B8C9-0123-CDEF-456789012345</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -19,7 +19,7 @@
 				<false/>
 			</dict>
 		</array>
-		<key>A2B3C4D5-E6F7-8901-ABCD-EF2345678901</key>
+		<key>D4E5F6A7-B8C9-0123-CDEF-456789012345</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
@@ -53,72 +53,6 @@
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
 				<key>argumenttreatemptyqueryasnil</key>
-				<true/>
-				<key>argumenttrimmode</key>
-				<integer>0</integer>
-				<key>argumenttype</key>
-				<integer>0</integer>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>keyword</key>
-				<string>wf</string>
-				<key>queuedelaycustom</key>
-				<integer>3</integer>
-				<key>queuedelayimmediatelyinitially</key>
-				<true/>
-				<key>queuedelaymode</key>
-				<integer>3</integer>
-				<key>queuemode</key>
-				<integer>1</integer>
-				<key>runningsubtext</key>
-				<string>Loading…</string>
-				<key>script</key>
-				<string>if [ "${use_uv}" = "1" ] &amp;&amp; command -v uv &gt;/dev/null 2&gt;&amp;1; then uv run python scripts/entry.py "$1"; else python3 scripts/entry.py "$1"; fi</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>subtext</key>
-				<string>Search or configure</string>
-				<key>title</key>
-				<string>Workflow Template</string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>36381EAF-63DA-4000-AED5-AF6DAF671396</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>browser</key>
-				<string></string>
-				<key>spaces</key>
-				<string></string>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>D90DBB99-FC05-4BE8-B79B-C4DFD1FE55F9</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>alfredfiltersresults</key>
-				<false/>
-				<key>alfredfiltersresultsmatchmode</key>
-				<integer>0</integer>
-				<key>argumenttreatemptyqueryasnil</key>
 				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
@@ -139,7 +73,7 @@
 				<key>runningsubtext</key>
 				<string>Resolving path…</string>
 				<key>script</key>
-				<string>if [ "${use_uv}" = "1" ] &amp;&amp; command -v uv &gt;/dev/null 2&gt;&amp;1; then uv run python scripts/entry.py "save $1"; else python3 scripts/entry.py "save $1"; fi</string>
+				<string>./quick-txt-save-alfred list "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -163,12 +97,32 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argument</key>
+				<string>{query}</string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict>
+					<key>text</key>
+					<string>{clipboard}</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>D4E5F6A7-B8C9-0123-CDEF-456789012345</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>python3 scripts/save_text.py "$1"</string>
+				<string>./quick-txt-save-alfred write "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -196,11 +150,7 @@ If a file with the same name already exists, (1), (2), … is appended automatic
 
 ## Configuration
 
-Open "Configure Workflow" to set the save directory (default: ~/Downloads).
-
-## Requirements
-
-Python 3.9+</string>
+Open "Configure Workflow" to set the save directory (default: ~/Downloads).</string>
 	<key>userconfigurationconfig</key>
 	<array>
 		<dict>
@@ -262,26 +212,11 @@ Python 3.9+</string>
 			<key>variable</key>
 			<string>file_ext</string>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<true/>
-			</dict>
-			<key>description</key>
-			<string>Use uv to run Python scripts when uv is available. Applies to scripts that use non-standard libraries.</string>
-			<key>label</key>
-			<string>Use uv (if available)</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>use_uv</string>
-		</dict>
 	</array>
 	<key>variables</key>
 	<dict/>
 	<key>version</key>
-	<string>0.1.0</string>
+	<string>1.0.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/y-marui/alfred-quick-txt-save</string>
 </dict>

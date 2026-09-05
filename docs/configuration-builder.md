@@ -1,7 +1,7 @@
 # Configuration Builder
 
 Alfred's **Configure Workflow** panel provides a user-facing UI to set workflow variables.
-These map directly to environment variables read by `src/app/services/save_service.py`.
+These map directly to environment variables read by `internal/quicksave/quicksave.go`.
 
 ## Variables
 
@@ -13,10 +13,10 @@ These map directly to environment variables read by `src/app/services/save_servi
 
 ## Variable Priority
 
-All variables are read from `os.environ` at call time:
+All variables are read via `os.Getenv()` at call time:
 
 1. Alfred workflow variable (set via Configure Workflow) — highest priority
-2. Hardcoded default in `save_service.py` — fallback
+2. Hardcoded default in `quicksave.go` — fallback
 
 ## Accessing the Panel
 
@@ -24,8 +24,10 @@ Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** 
 
 ## info.plist
 
-Workflow variables are declared in `workflow/info.plist` under the `variables` key.
+Workflow variables are declared in `workflow/info.plist` under `userconfigurationconfig`
+(Config Builder), not the `variables` key — see `internal/quicksave` in
+`AI_CONTEXT.md`'s Configuration Management section for why.
 When adding a new variable:
-1. Add it to `workflow/info.plist` → `variables`
-2. Read it in the appropriate service with `os.environ.get("var_name", "default")`
+1. Add an entry to `workflow/info.plist` → `userconfigurationconfig`
+2. Read it in `internal/quicksave` with `os.Getenv("var_name")`, falling back to a default
 3. Document it in this file and in `docs/specification.md`
