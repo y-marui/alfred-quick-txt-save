@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.github.y-marui.alfred-quick-txt-save</string>
+	<string>com.y-marui.alfred-quick-txt-save</string>
 	<key>connections</key>
 	<dict>
 		<key>A2B3C4D5-E6F7-8901-ABCD-EF2345678901</key>
