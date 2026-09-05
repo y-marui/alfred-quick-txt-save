@@ -28,7 +28,7 @@ go build ./...
 go run ./cmd/quick-txt-save-alfred list ""            # default filename preview
 go run ./cmd/quick-txt-save-alfred list "mynotes"
 go run ./cmd/quick-txt-save-alfred list "notes.md"
-go run ./cmd/quick-txt-save-alfred write /tmp/out.txt  # writes the real clipboard to /tmp/out.txt
+text="hello" go run ./cmd/quick-txt-save-alfred write /tmp/out.txt  # writes "hello" to /tmp/out.txt
 ```
 
 Pipe through `jq` for pretty-printed JSON:

@@ -2,68 +2,9 @@ package quicksave
 
 import (
 	"os"
-	"os/exec"
 	"path/filepath"
-	"runtime"
 	"testing"
 )
-
-// TestMain saves the real clipboard's plain-text content once before any
-// test in this package runs, and restores it once after they all finish,
-// so a local run doesn't clobber the developer's clipboard.
-func TestMain(m *testing.M) {
-	original, _ := exec.Command("pbpaste").Output()
-	code := m.Run()
-	restoreClipboard(original)
-	os.Exit(code)
-}
-
-func restoreClipboard(text []byte) {
-	cmd := exec.Command("pbcopy")
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		return
-	}
-	if err := cmd.Start(); err != nil {
-		return
-	}
-	_, _ = stdin.Write(text)
-	_ = stdin.Close()
-	_ = cmd.Wait()
-}
-
-func requireMacOS(t *testing.T) {
-	t.Helper()
-	if runtime.GOOS != "darwin" {
-		t.Skip("quicksave clipboard integration is macOS-only")
-	}
-	for _, bin := range []string{"pbcopy", "pbpaste", "osascript"} {
-		if _, err := exec.LookPath(bin); err != nil {
-			t.Skipf("%s not found", bin)
-		}
-	}
-}
-
-func setClipboard(t *testing.T, text string) {
-	t.Helper()
-	cmd := exec.Command("pbcopy")
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		t.Fatalf("pbcopy stdin: %v", err)
-	}
-	if err := cmd.Start(); err != nil {
-		t.Fatalf("pbcopy start: %v", err)
-	}
-	if _, err := stdin.Write([]byte(text)); err != nil {
-		t.Fatalf("pbcopy write: %v", err)
-	}
-	if err := stdin.Close(); err != nil {
-		t.Fatalf("pbcopy close: %v", err)
-	}
-	if err := cmd.Wait(); err != nil {
-		t.Fatalf("pbcopy wait: %v", err)
-	}
-}
 
 func TestSaveTextEmptyWritesNothing(t *testing.T) {
 	dir := t.TempDir()
@@ -117,36 +58,21 @@ func TestSaveTextCreatesParentDirectories(t *testing.T) {
 	}
 }
 
-func TestSaveReadsRealClipboard(t *testing.T) {
-	requireMacOS(t)
-	setClipboard(t, "clipboard integration test content")
-
+func TestSaveTextWriteFailureReturnsError(t *testing.T) {
 	dir := t.TempDir()
-	path := filepath.Join(dir, "out.txt")
-
-	if err := Save(path); err != nil {
-		t.Fatalf("Save: %v", err)
+	// blocker is a file, not a directory, so MkdirAll for a path underneath
+	// it must fail.
+	blocker := filepath.Join(dir, "blocker")
+	if err := os.WriteFile(blocker, []byte("x"), 0o644); err != nil {
+		t.Fatalf("setup: %v", err)
 	}
-	got, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatalf("ReadFile: %v", err)
-	}
-	if string(got) != "clipboard integration test content" {
-		t.Errorf("content = %q, want %q", got, "clipboard integration test content")
-	}
-}
+	path := filepath.Join(blocker, "out.txt")
 
-func TestSaveEmptyClipboardWritesNothing(t *testing.T) {
-	requireMacOS(t)
-	setClipboard(t, "")
-
-	dir := t.TempDir()
-	path := filepath.Join(dir, "out.txt")
-
-	if err := Save(path); err != nil {
-		t.Fatalf("Save: %v", err)
+	wrote, err := SaveText(path, "content")
+	if err == nil {
+		t.Fatal("SaveText: expected error when parent path is not a directory")
 	}
-	if _, err := os.Stat(path); !os.IsNotExist(err) {
-		t.Errorf("expected %s not to exist, stat err = %v", path, err)
+	if wrote {
+		t.Error("wrote = true, want false on failure")
 	}
 }

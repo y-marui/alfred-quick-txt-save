@@ -18,9 +18,12 @@ Functional specification and behavior definition for alfred-quick-txt-save.
 
 - If clipboard is empty, nothing is written and a "Clipboard is empty" notification is posted.
 - If the resolved path already exists, appends `(1)`, `(2)`, … before the extension until a free name is found.
-- A macOS notification confirms the save.
+- A macOS notification confirms the save, or reports the failure if the write itself fails
+  (e.g. an unwritable save directory).
 - The Script Filter (`list` subcommand) previews the resolved path. The actual write happens
-  in the `write` subcommand after Alfred passes the path as `arg`.
+  in the `write` subcommand after Alfred passes the path as `arg` and the clipboard's text as
+  the `text` variable (via an Arguments and Variables node using Alfred's `{clipboard}`
+  placeholder — the binary itself never reads the pasteboard).
 
 ---
 
@@ -71,13 +74,17 @@ cmd/quick-txt-save-alfred list [filename]
 internal/quicksavecmd.List()      ← resolves path, returns Script Filter items
   │
   ▼
+Alfred (Arguments and Variables node)
+  │  argument = {query} (the resolved path, passed through unchanged)
+  │  sets variable text = {clipboard}
+  ▼
 Alfred (Run Script node)
-  │  arg = resolved file path
+  │  arg = resolved file path; env var text = clipboard's plain text
   ▼
 cmd/quick-txt-save-alfred write <path>
   │
   ▼
-internal/quicksave.Save()         ← reads pbpaste, writes file, sends macOS notification
+internal/quicksave.SaveText()     ← writes file, sends macOS notification (or reports failure)
 ```
 
 ## Error Handling

@@ -6,33 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"testing"
 )
-
-// TestMain saves the real clipboard's plain-text content once before any
-// test in this package runs, and restores it once after they all finish,
-// so a local run doesn't clobber the developer's clipboard.
-func TestMain(m *testing.M) {
-	original, _ := exec.Command("pbpaste").Output()
-	code := m.Run()
-	restoreClipboard(original)
-	os.Exit(code)
-}
-
-func restoreClipboard(text []byte) {
-	cmd := exec.Command("pbcopy")
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		return
-	}
-	if err := cmd.Start(); err != nil {
-		return
-	}
-	_, _ = stdin.Write(text)
-	_ = stdin.Close()
-	_ = cmd.Wait()
-}
 
 func buildBinary(t *testing.T) string {
 	t.Helper()
@@ -128,16 +103,13 @@ func TestWriteRequiresPathArgument(t *testing.T) {
 	}
 }
 
-func TestWriteSavesRealClipboard(t *testing.T) {
-	requireMacOS(t)
+func TestWriteUsesTextEnvVar(t *testing.T) {
 	bin := buildBinary(t)
-
-	setClipboard(t, "quick-txt-save-alfred integration test content")
-
 	tmp := t.TempDir()
 	path := filepath.Join(tmp, "out.txt")
+	env := append(os.Environ(), "text=quick-txt-save-alfred integration test content")
 
-	_, stderr, code := runBinary(t, bin, os.Environ(), "write", path)
+	_, stderr, code := runBinary(t, bin, env, "write", path)
 	if code != 0 {
 		t.Fatalf("exit code = %d, stderr = %s", code, stderr)
 	}
@@ -150,35 +122,16 @@ func TestWriteSavesRealClipboard(t *testing.T) {
 	}
 }
 
-func requireMacOS(t *testing.T) {
-	t.Helper()
-	if runtime.GOOS != "darwin" {
-		t.Skip("clipboard integration is macOS-only")
-	}
-	for _, bin := range []string{"pbcopy", "pbpaste", "osascript"} {
-		if _, err := exec.LookPath(bin); err != nil {
-			t.Skipf("%s not found", bin)
-		}
-	}
-}
+func TestWriteEmptyTextEnvVarWritesNothing(t *testing.T) {
+	bin := buildBinary(t)
+	tmp := t.TempDir()
+	path := filepath.Join(tmp, "out.txt")
 
-func setClipboard(t *testing.T, text string) {
-	t.Helper()
-	cmd := exec.Command("pbcopy")
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		t.Fatalf("pbcopy stdin: %v", err)
+	_, stderr, code := runBinary(t, bin, os.Environ(), "write", path)
+	if code != 0 {
+		t.Fatalf("exit code = %d, stderr = %s", code, stderr)
 	}
-	if err := cmd.Start(); err != nil {
-		t.Fatalf("pbcopy start: %v", err)
-	}
-	if _, err := stdin.Write([]byte(text)); err != nil {
-		t.Fatalf("pbcopy write: %v", err)
-	}
-	if err := stdin.Close(); err != nil {
-		t.Fatalf("pbcopy close: %v", err)
-	}
-	if err := cmd.Wait(); err != nil {
-		t.Fatalf("pbcopy wait: %v", err)
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		t.Errorf("expected %s not to exist, stat err = %v", path, err)
 	}
 }

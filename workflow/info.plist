@@ -10,6 +10,19 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
+				<string>D4E5F6A7-B8C9-0123-CDEF-456789012345</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>D4E5F6A7-B8C9-0123-CDEF-456789012345</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
 				<string>B3C4D5E6-F7A8-9012-BCDE-F34567890123</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -80,6 +93,26 @@
 			<string>A2B3C4D5-E6F7-8901-ABCD-EF2345678901</string>
 			<key>version</key>
 			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{query}</string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict>
+					<key>text</key>
+					<string>{clipboard}</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>D4E5F6A7-B8C9-0123-CDEF-456789012345</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>

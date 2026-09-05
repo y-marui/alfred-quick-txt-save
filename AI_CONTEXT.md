@@ -30,7 +30,7 @@ Go（サードパーティ依存なし）、`cmd/`+`internal/` レイアウト�
 
 ```
 cmd/quick-txt-save-alfred/  ← Alfred が実行する唯一のバイナリ
-internal/quicksave/         ← 保存先パス解決・クリップボード書き込みロジック（コア、stdlib のみ）
+internal/quicksave/         ← 保存先パス解決・テキストのファイル書き込みロジック（コア、stdlib のみ）
 internal/quicksavecmd/      ← Script Filter レスポンス生成（Alfred 依存はここまで）
 internal/scriptfilter/      ← Alfred Script Filter JSON 型
 workflow/                   ← Alfred パッケージ（info.plist / icon.png）
@@ -217,9 +217,11 @@ Alfred ワークフローは現時点では UI テキストのローカライゼ
 ### テスト規約
 
 - `internal/quicksave/`・`internal/quicksavecmd/` をテスト対象とする（`go test ./...`）
-- クリップボード（`pbcopy`/`pbpaste`）・通知（`osascript`）に触れるテストは `TestMain` で
-  実クリップボードを退避・復元し、`requireMacOS(t)` ヘルパーで macOS 以外をスキップする
-- 純粋なロジック（`SaveText`・パス解決）は実 OS コマンドに触れずテストできるようにする
+- クリップボードは Alfred の `{clipboard}` プレースホルダー経由でのみ渡され、Go コードは
+  `pbpaste`/`pbcopy` を一切呼ばないため、実クリップボードの退避・復元は不要
+- `SaveText` は `osascript` 経由の通知を呼ぶが、失敗時は無視するだけなので macOS 以外でも
+  テストは通る（実際の通知内容の検証はしない）
+- パス解決・ファイル書き込みロジックは `t.TempDir()`/`t.Setenv()` のみで完結させる
 
 ### Go Development Environment (GO_TOOLCHAIN)
 
@@ -243,6 +245,11 @@ Alfred は Script Filter / Run Script ノードからユニバーサル（amd64+
 ./quick-txt-save-alfred list "$1"    # Script Filter（"save" キーワード）
 ./quick-txt-save-alfred write "$1"   # Run Script（保存実行）
 ```
+
+`list` と `write` の間には Arguments and Variables ノードを挟み、Alfred の `{clipboard}`
+プレースホルダーを `text` 変数に設定して渡す（`$1` は解決済みパスのまま素通し）。
+`write` サブコマンドは `pbpaste` を自前で呼ばず、`os.Getenv("text")` で受け取るだけ
+— クリップボード読み取りは Alfred 側の責務とし、Go 側では行わない。
 
 ### Configuration Management (CONFIG_BUILDER)
 

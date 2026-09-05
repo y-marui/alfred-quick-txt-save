@@ -65,7 +65,7 @@ alfred-quick-txt-save/
 ├── cmd/
 │   └── quick-txt-save-alfred/  # The binary Alfred invokes
 ├── internal/
-│   ├── quicksave/       # Path resolution and clipboard-to-file write logic (core)
+│   ├── quicksave/       # Path resolution and text-to-file write logic (core)
 │   ├── quicksavecmd/    # Script Filter response building
 │   └── scriptfilter/    # Alfred Script Filter JSON types
 └── workflow/            # Alfred package (info.plist, icon.png)

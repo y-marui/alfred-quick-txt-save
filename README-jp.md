@@ -65,7 +65,7 @@ alfred-quick-txt-save/
 ├── cmd/
 │   └── quick-txt-save-alfred/  # Alfred が実行するバイナリ
 ├── internal/
-│   ├── quicksave/       # 保存先パス解決・クリップボード書き込みロジック（コア）
+│   ├── quicksave/       # 保存先パス解決・テキストのファイル書き込みロジック（コア）
 │   ├── quicksavecmd/    # Script Filter レスポンス生成
 │   └── scriptfilter/    # Alfred Script Filter JSON 型
 └── workflow/            # Alfred パッケージ（info.plist, icon.png）

@@ -14,10 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rewrite in Go (`cmd/`+`internal/` layout, matching sibling `alfred-*` workflows)
 - `save [filename]` command ported 1:1 from the Python prototype: path resolution
   (`{prefix}_{YYYYMMDD_HHMMSS}{ext}` default filename, extension auto-append, collision
-  avoidance via `(1)`, `(2)`, …), clipboard-to-file write, macOS notification on save or on
-  an empty clipboard
+  avoidance via `(1)`, `(2)`, …), clipboard-to-file write, macOS notification on save, on an
+  empty clipboard, or on a write failure
 - Single universal (amd64+arm64) static binary — no Python/uv runtime or vendored
   dependencies required
+- Clipboard text is read via Alfred's own `{clipboard}` placeholder (an Arguments and
+  Variables node), not by shelling out to `pbpaste` — the binary never touches the
+  pasteboard itself
 
 ### Removed
 
