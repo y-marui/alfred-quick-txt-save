@@ -10,8 +10,8 @@
 このプロジェクトの docs/architecture.md を更新してください。
 
 手順：
-1. ディレクトリ構造を確認する: ls -R src/ workflow/ tests/
-2. 主要ファイルを読む（src/app/core.py、workflow/scripts/entry.py 等）
+1. ディレクトリ構造を確認する: ls -R cmd/ internal/ workflow/
+2. 主要ファイルを読む（cmd/quick-txt-save-alfred/main.go、internal/quicksavecmd/quicksavecmd.go 等）
 3. 既存の docs/architecture.md を読む（存在する場合）
 4. 以下のフォーマットで docs/architecture.md を上書き保存する:
 
@@ -26,12 +26,12 @@
 ## Directory Structure
 | ディレクトリ | 役割 |
 |---|---|
-| `src/alfred/` | ... |
+| `internal/quicksave/` | ... |
 
 ## Key Dependencies
 | ライブラリ / モジュール | 用途 |
 |---|---|
-| `pyproject.toml` 参照 | ... |
+| `go.mod` 参照 | ... |
 
 注意：ファイルレベルの詳細は記載しない（file-map.md に委譲）。主要な依存のみ列挙する。
 ```
@@ -56,7 +56,7 @@ _最終更新: YYYY-MM-DD_
 ## [モジュール / 機能名]
 | ファイル | 役割 | 主な依存先 |
 |---|---|---|
-| `src/foo.py` | 説明 | `src/bar.py` |
+| `internal/foo/foo.go` | 説明 | `internal/bar` |
 
 注意：全ファイルを網羅しなくてよい。AI が参照・編集したファイルを順次追記する。
 更新のたびに「最終更新」日付を更新すること。

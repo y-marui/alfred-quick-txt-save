@@ -14,7 +14,6 @@
 ## 動作要件
 
 - Alfred 5（Script Filter には Powerpack が必要）
-- Python 3.11+
 
 ## セットアップ
 
@@ -54,11 +53,23 @@ Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** 
 
 **保存されない** — `save` を実行する前にクリップボードが空でないことを確認してください。
 
-**別のディレクトリに保存された** — `save dir <path>` で保存先を更新するか、
-`wf config` で現在の `save_dir` 設定を確認してください。
+**別のディレクトリに保存された** — Configure Workflow の Save Directory 設定を確認・変更してください。
 
 **ワークフローが反応しない** — Alfred のデバッガー（⌘D）を開くか、
 `~/Library/Logs/Alfred/Workflow/<bundle-id>.log` を確認してください。
+
+## プロジェクト構成
+
+```
+alfred-quick-txt-save/
+├── cmd/
+│   └── quick-txt-save-alfred/  # Alfred が実行するバイナリ
+├── internal/
+│   ├── quicksave/       # 保存先パス解決・クリップボード書き込みロジック（コア）
+│   ├── quicksavecmd/    # Script Filter レスポンス生成
+│   └── scriptfilter/    # Alfred Script Filter JSON 型
+└── workflow/            # Alfred パッケージ（info.plist, icon.png）
+```
 
 ## ドキュメント
 

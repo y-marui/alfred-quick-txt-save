@@ -7,15 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-05
+
 ### Added
 
-- `save [filename]` command: saves clipboard text to a .txt file via Alfred Script Filter
-- `save dir <path>` subcommand: sets and persists the save directory
-- `save_service`: path resolution with configurable save directory (default `~/Downloads`)
-- `save_text.py`: standalone Run Script that reads `pbpaste` and writes the file
-- macOS notification on successful save (via `osascript`)
-- Auto-generated filename `quick_save_YYYYMMDD.txt` when no filename is given
-- Auto-appended `.txt` extension when filename has no extension
+- Rewrite in Go (`cmd/`+`internal/` layout, matching sibling `alfred-*` workflows)
+- `save [filename]` command ported 1:1 from the Python prototype: path resolution
+  (`{prefix}_{YYYYMMDD_HHMMSS}{ext}` default filename, extension auto-append, collision
+  avoidance via `(1)`, `(2)`, …), clipboard-to-file write, macOS notification on save or on
+  an empty clipboard
+- Single universal (amd64+arm64) static binary — no Python/uv runtime or vendored
+  dependencies required
+
+### Removed
+
+- The unused `alfred-workflow-template` scaffold (`search`/`open`/`config`/`help` commands,
+  the `wf` keyword Script Filter node, `ExampleService`/`ApiClient`) — never customized past
+  the template defaults and not part of this workflow's actual product surface
 
 ## [0.1.0] - 2024-01-01
 
@@ -30,5 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions Release (tag → `.alfredworkflow` → GitHub Release)
 - Full pytest test suite
 
-[Unreleased]: https://github.com/y-marui/alfred-quick-txt-save/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/y-marui/alfred-quick-txt-save/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/y-marui/alfred-quick-txt-save/releases/tag/v1.0.0
 [0.1.0]: https://github.com/y-marui/alfred-quick-txt-save/releases/tag/v0.1.0

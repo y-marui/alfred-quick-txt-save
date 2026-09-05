@@ -14,7 +14,6 @@ Save clipboard or selected text to a .txt file with one keystroke.
 ## Requirements
 
 - Alfred 5 (Powerpack required for Script Filter)
-- Python 3.11+
 
 ## Setup
 
@@ -54,11 +53,23 @@ Open Alfred Preferences → Workflows → Quick Text Save → **Configure Workfl
 
 **Nothing was saved** — Check that the clipboard is not empty before running `save`.
 
-**File saved to wrong directory** — Run `save dir <path>` to update the save directory,
-or check `wf config` for the current `save_dir` setting.
+**File saved to wrong directory** — Check the Save Directory setting under Configure Workflow.
 
 **Workflow not responding** — Open Alfred's debugger (⌘D) or check
 `~/Library/Logs/Alfred/Workflow/<bundle-id>.log`.
+
+## Project Structure
+
+```
+alfred-quick-txt-save/
+├── cmd/
+│   └── quick-txt-save-alfred/  # The binary Alfred invokes
+├── internal/
+│   ├── quicksave/       # Path resolution and clipboard-to-file write logic (core)
+│   ├── quicksavecmd/    # Script Filter response building
+│   └── scriptfilter/    # Alfred Script Filter JSON types
+└── workflow/            # Alfred package (info.plist, icon.png)
+```
 
 ## Documentation
 
