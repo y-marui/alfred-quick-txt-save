@@ -53,6 +53,26 @@ Dependency direction: `cmd → quicksavecmd → quicksave`, and `quicksavecmd �
 `internal/quicksave` never imports `internal/scriptfilter` — it has no Alfred JSON concerns.
 It also never reads the clipboard itself — that's `workflow/info.plist`'s job via `{clipboard}`.
 
+## Why the file write and notification stay in Go
+
+Two other pieces of `internal/quicksave` were considered for a move to native Alfred
+objects (alongside the clipboard read, which did move — see above) and deliberately kept in
+Go:
+
+- **Writing the file** — Alfred's native "Write File" output object writes relative to one
+  of three workflow-scoped folders (data/cache/workflow folder); its documentation does not
+  confirm it can target an arbitrary absolute path outside that sandbox. This workflow must
+  write to whatever directory the user configures via `save_dir` (any folder, anywhere), so
+  the write stays in `SaveText`. If this is ever re-verified in Alfred directly (build a
+  throwaway Write File node, point it at e.g. `~/Desktop/test.txt`, confirm it actually lands
+  there), this constraint may no longer apply.
+- **Posting the notification** — Alfred's `alfred.workflow.action.script` (Run Script) node
+  has no way to branch a downstream connection on the script's exit code (only on modifier
+  keys held). A native Post Notification node reached unconditionally after the Run Script
+  step would show "Saved" even when the write failed. Keeping the notification in
+  `SaveText`, decided in the same process that performs the write, is what lets it correctly
+  distinguish success, empty clipboard, and failure.
+
 ## Key Dependencies
 
 | Library / Module | Purpose |
