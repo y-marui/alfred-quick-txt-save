@@ -11,18 +11,18 @@
 
 クリップボードまたは選択テキストをワンキーで .txt ファイルに保存する Alfred ワークフロー。
 
-## 動作要件
+## Requirements
 
 - Alfred 5（Script Filter には Powerpack が必要）
 
-## セットアップ
+## Setup
 
 1. [Releases](https://github.com/y-marui/alfred-quick-txt-save/releases) から最新の `.alfredworkflow` をダウンロード
 2. ダブルクリックして Alfred にインストール
 
-## 使い方
+## Usage
 
-### クリップボードのテキストを保存
+### Save clipboard text
 
 テキストをクリップボードにコピーし、Alfred で `save` と入力して Enter を押します。
 
@@ -39,7 +39,7 @@ save notes.md     -> ~/Downloads/notes.md
 各結果の2行目に保存先フルパスが表示されます。
 保存ディレクトリが存在しない場合は自動的に作成されます。
 
-### 設定
+### Configuration
 
 Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** を開きます。
 
@@ -49,7 +49,7 @@ Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** 
 | Filename Prefix | 自動生成ファイル名のプレフィックス | `quick_save` |
 | Default Extension | 拡張子未指定時に付加される拡張子 | `.txt` |
 
-## 注意事項
+## Notes
 
 **保存されない** — `save` を実行する前にクリップボードが空でないことを確認してください。
 
@@ -58,7 +58,7 @@ Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** 
 **ワークフローが反応しない** — Alfred のデバッガー（⌘D）を開くか、
 `~/Library/Logs/Alfred/Workflow/<bundle-id>.log` を確認してください。
 
-## プロジェクト構成
+## Project Structure
 
 ```
 alfred-quick-txt-save/
@@ -71,7 +71,7 @@ alfred-quick-txt-save/
 └── workflow/            # Alfred パッケージ（info.plist, icon.png）
 ```
 
-## ドキュメント
+## Documentation
 
 | ドキュメント | 内容 |
 |---|---|
@@ -79,10 +79,10 @@ alfred-quick-txt-save/
 | [docs/architecture.md](docs/architecture.md) | レイヤー設計とデータフロー |
 | [docs/specification.md](docs/specification.md) | コマンド・設定・動作仕様 |
 
-## ライセンス
+## License
 
 MIT — [LICENSE](LICENSE) を参照
 
 ---
 
-*この文書には英語版 [README.md](README.md) があります。編集時は同一コミットで更新してください。*
+*この文書には英語版（参照版）[README.md](README.md) があります。編集時は同一コミットで更新してください。*

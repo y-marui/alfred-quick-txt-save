@@ -45,20 +45,20 @@ scripts/                    ← build-workflow.sh / extract-changelog.sh
 
 憲章参照: docs/dev-charter/CHARTER_INDEX.md でトピックを特定してから該当ファイルのみ読む
 
-### AIコンテキスト優先順位（AI_CONTEXT_HIERARCHY）
+### AI Context Priority (AI_CONTEXT_HIERARCHY)
 
 1. タスクコンテキスト（Issue / Pull Request）
 2. **プロジェクトコンテキスト（このファイル・プロジェクトドキュメント）** ← ここ
 3. 開発憲章（`docs/dev-charter/`）
 4. グローバルコンテキスト
 
-### ソフトウェア設計原則（SOFTWARE_DESIGN_PRINCIPLES）
+### Software Design Principles (SOFTWARE_DESIGN_PRINCIPLES)
 
 - **ローカルファースト** — Alfred ワークフローはオフラインで動作することを前提にする
 - **インフラ最小化** — サーバーレス、外部依存なし（単一の静的バイナリに完結）
 - **小さく始める** — 機能追加は必要性が確認されてから
 
-### 開発原則（PRINCIPLES）
+### Change Design Principles (PRINCIPLES)
 
 - **変更範囲は必要最小限** — Over-engineering しない
 - **YAGNI** — 今必要ない機能は実装しない
@@ -67,13 +67,13 @@ scripts/                    ← build-workflow.sh / extract-changelog.sh
 - **TODO/FIXME を残さない** — 実装するか、Issue として記録する
 - **既存パターンに従う** — 命名規則・アーキテクチャ・ディレクトリ構造を統一する
 
-### AI協働ルール（AI_COLLABORATION_RULES）
+### AI Collaboration Rules (AI_COLLABORATION_RULES)
 
-#### AI行動原則
+#### AI Behavior Principles
 - **Scope 厳守** — 会話のタスク・ゴールを AI が勝手に変更しない
 - **不明点は作業前に1回でまとめて質問する** — 重要な情報不足や曖昧さは質問する。軽微な不足は合理的な仮定で補い、仮定を明示する。推測で断定しない
 
-#### コーディング前の確認必須項目
+#### Required Confirmations Before Coding
 - ゴール（完了条件）
 - 言語・FW・バージョン制約
 - 新規 or 既存コード修正
@@ -82,18 +82,18 @@ scripts/                    ← build-workflow.sh / extract-changelog.sh
 
 確認不要（既存コードに合わせて進める）: コードスタイル / ファイル配置 / 軽微な実装詳細
 
-#### エラー対応
+#### Error Handling
 - **原因分析 → 修正方針説明 → 実装** の順で進める
 - エラーログ・スタックトレースは全文確認してから対応
 - 推測で修正しない（必要なら既存コードを確認する）
 - デバッグ用の `fmt.Print*` 文は本番コードに残さない
 
-#### 作業スタンス
+#### Working Stance
 - 大きな変更前に方針を説明してから着手する
 - **不要な依存追加禁止** — 既存の依存で解決できないか先に検討する
 - **ドキュメント同期** — 仕様・ルール・構成に変更が生じたとき、変更と同じ作業内で関連ドキュメントを更新する。対象は `docs/` 内のファイルに限らず、`AI_CONTEXT.md`・`README.md` 等のルートファイルも含む
 
-#### dev-charter 変更ルール
+#### dev-charter Modification Rules
 
 `docs/dev-charter/` 配下のファイルは**直接編集しない**。
 
@@ -119,7 +119,7 @@ gh issue create --title "..." --body "..." --assignee @me
 
 > `@me` はトークンのオーナーに解決されるため、ユーザー名のハードコードは不要。
 
-### 言語ポリシー（LANGUAGE_POLICY）
+### Language Policy (LANGUAGE_POLICY)
 
 OSS プロジェクトのため、**公開面は英語を主言語**とする。
 **日本語版が編集の起点（正本）であり、英語版はその翻訳として同期する。**
@@ -138,40 +138,40 @@ OSS プロジェクトのため、**公開面は英語を主言語**とする。
 
 両言語ファイルが存在する場合: **日本語を正本として編集し、英語はそれに合わせて同一コミットで更新する**。
 
-### プロジェクトライフサイクル（PROJECT_LIFECYCLE）
+### Project Lifecycle (PROJECT_LIFECYCLE)
 
 - 規模: 個人〜3人。アジャイルで迅速な意思決定
 - **コミット粒度** — 機能単位・動作確認 OK 後にコミット
 - **コミットメッセージ** — Conventional Commits 形式（feat / fix / refactor / docs / chore）
 - **WIP 禁止** — 動作しないコードはコミットしない
 
-### セキュリティ（SECURITY_POLICY）
+### Security (SECURITY_POLICY)
 
-#### 二層構造
+#### Two-Layer Structure
 1. **個人 git フック**（`~/.config/git/hooks/pre-commit`）— 開発者個人のマシン全体に適用
 2. **per-repo pre-commit フック**（`.pre-commit-config.yaml`）— チーム強制・CI でも動作
 
-#### 自動ブロック項目
+#### Automatically Blocked Items
 - `anonymous` のままコミット（個人 git フック側で対応。per-repo フックでは検知しない）
 - `.env` ファイルのコミット（`.env.example` は許可）
 - SSH 秘密鍵・クラウドトークン（gitleaks で検知）
 - ローカル絶対パスのハードコード（環境依存コードの防止。`.md`・`docs/` は allowlist で除外）
 - 500 KB を超えるファイル
 
-#### 手動遵守事項
+#### Manual Compliance Items
 - API キー・パスワードをコードに書かない（Alfred の暗号化キーチェーンを使う）
 - 誤ってコミットしたシークレットは、履歴から削除した上で即座にローテーションする
 - AI に秘密情報を含むファイルやコードを渡さない
 - AI が生成したコードは必ずレビューしてからコミットする
 - AI との会話ログをリポジトリにコミットしない
 
-#### コードレビュー
+#### Code Review
 - `main` に到達するコミットは可能な限り他の開発者がレビューする（個人開発の場合は PR を経由してセルフレビューする）
 - 認証・認可・暗号化・データアクセスに関わる変更はセキュリティレビューを必須とする
 
 詳細: `SECURITY.md`、`docs/dev-charter/SECURITY_POLICY.md`
 
-### UIガイドライン（UI_GUIDELINES）
+### UI Guidelines (UI_GUIDELINES)
 
 Alfred Script Filter のレスポンス（JSON items）に適用するルール:
 
@@ -180,7 +180,7 @@ Alfred Script Filter のレスポンス（JSON items）に適用するルール:
 - アイコンは `workflow/icon.png` で制御する（PNG ファイル）
 - 外観モード（ライト/ダーク）は Alfred が制御するため、ワークフロー側での対応は不要
 
-### マネタイズ（MONETIZATION_POLICY）
+### Monetization (MONETIZATION_POLICY)
 
 OSS プロジェクトのため、以下の方式を採用:
 
@@ -190,7 +190,7 @@ OSS プロジェクトのため、以下の方式を採用:
 dev-charter バッジの後に GitHub Sponsors と Buy Me a Coffee のバッジを掲載する（サポートセクションは設けずバッジで代替）。
 マネタイズを本格検討する場合は `MONETIZATION.md` を作成し、このファイルに概要を追記する。
 
-### ローカライゼーション（LOCALIZATION_POLICY）
+### Localization (LOCALIZATION_POLICY)
 
 Alfred ワークフローは現時点では UI テキストのローカライゼーション機能を持たない。
 将来的に対応する場合の優先言語順:
@@ -205,7 +205,7 @@ Alfred ワークフローは現時点では UI テキストのローカライゼ
 
 ## Project-Specific Rules
 
-### アーキテクチャ制約
+### Architecture Constraints
 
 - `cmd/quick-txt-save-alfred/main.go` は Alfred が実行する**唯一のバイナリ**。ビジネスロジックを書かない
 - `internal/quicksavecmd/` はディスパッチ・レスポンス生成のみ — 保存先解決・書き込みロジックは `internal/quicksave/` に置く
@@ -214,7 +214,7 @@ Alfred ワークフローは現時点では UI テキストのローカライゼ
 - `main()` は panic を `recover()` でラップする（未捕捉 panic = Alfred が空白表示になる。ただし
   `write` サブコマンドは JSON 契約を持たない Run Script アクションのため対象外）
 
-### テスト規約
+### Testing Conventions
 
 - `internal/quicksave/`・`internal/quicksavecmd/` をテスト対象とする（`go test ./...`）
 - クリップボードは Alfred の `{clipboard}` プレースホルダー経由でのみ渡され、Go コードは
@@ -267,11 +267,11 @@ Alfred は Script Filter / Run Script ノードからユニバーサル（amd64+
 
 命名規則・コミットメッセージ形式・PR チェックリストは `DEVELOPING.md` を参照する。
 
-### パフォーマンス
+### Performance
 
 - Script Filter のレスポンスタイム目標: **100ms 未満**（コンパイル済みバイナリのため通常余裕がある）
 
-### 依存管理
+### Dependency Management
 
 - サードパーティ依存の追加は原則禁止（`go.mod` は依存なしを維持）
 - ランタイム依存は最小限に保つ（パッケージ追加 = ワークフローサイズ・起動時間の増加）
@@ -301,7 +301,7 @@ Alfred は Script Filter / Run Script ノードからユニバーサル（amd64+
 
 ---
 
-## 開発コマンド
+## Development Commands
 
 ```bash
 go build ./...                                  # ビルド
@@ -312,7 +312,7 @@ make build-workflow                             # dist/*.alfredworkflow を生�
 go run ./cmd/quick-txt-save-alfred list "notes" # Alfred をローカルでシミュレート
 ```
 
-## リリース手順
+## Release Process
 
 ```bash
 # workflow/info.plist のバージョンを更新

@@ -1,3 +1,11 @@
+exclude: |
+  (?x)^(
+    \.git/|
+    dist/|
+    \.build/|
+    go\.sum$
+  )
+
 repos:
   # General file hygiene + security basics
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -53,6 +61,16 @@ repos:
             \.gitleaks\.toml$|
             \.pre-commit-config\.yaml$
           )
+
+  # Markdown section headings must be in English, even in Japanese-canonical docs
+  - repo: local
+    hooks:
+      - id: check-markdown-heading-language
+        name: check markdown section heading language
+        language: script
+        entry: scripts/check-markdown-heading-language.sh
+        files: \.md$
+        exclude: ^docs/dev-charter/
 
   # ----------------------------------------------------------------
   # Go (repository-specific; not part of the shared dev-charter set)
