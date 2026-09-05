@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The save-outcome notification (saved / clipboard empty / write failed) is now posted by a
+  native Post Notification node reading a `{message}` workflow variable, instead of the Go
+  binary shelling out to `osascript`. The binary is now stdlib-only — no external process is
+  invoked at all.
+
 ## [1.0.0] - 2026-09-05
 
 ### Added

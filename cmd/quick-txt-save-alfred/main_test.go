@@ -52,6 +52,21 @@ type scriptFilterResponse struct {
 	Items []scriptFilterItem `json:"items"`
 }
 
+type workflowVariablesEnvelope struct {
+	Alfredworkflow struct {
+		Variables map[string]string `json:"variables"`
+	} `json:"alfredworkflow"`
+}
+
+func decodeMessage(t *testing.T, stdout string) string {
+	t.Helper()
+	var env workflowVariablesEnvelope
+	if err := json.Unmarshal([]byte(stdout), &env); err != nil {
+		t.Fatalf("Unmarshal(%q): %v", stdout, err)
+	}
+	return env.Alfredworkflow.Variables["message"]
+}
+
 func TestListPrintsValidJSON(t *testing.T) {
 	bin := buildBinary(t)
 	tmp := t.TempDir()
@@ -109,7 +124,7 @@ func TestWriteUsesTextEnvVar(t *testing.T) {
 	path := filepath.Join(tmp, "out.txt")
 	env := append(os.Environ(), "text=quick-txt-save-alfred integration test content")
 
-	_, stderr, code := runBinary(t, bin, env, "write", path)
+	stdout, stderr, code := runBinary(t, bin, env, "write", path)
 	if code != 0 {
 		t.Fatalf("exit code = %d, stderr = %s", code, stderr)
 	}
@@ -120,6 +135,9 @@ func TestWriteUsesTextEnvVar(t *testing.T) {
 	if string(got) != "quick-txt-save-alfred integration test content" {
 		t.Errorf("content = %q, want %q", got, "quick-txt-save-alfred integration test content")
 	}
+	if want := "Saved to out.txt"; decodeMessage(t, stdout) != want {
+		t.Errorf("message = %q, want %q", decodeMessage(t, stdout), want)
+	}
 }
 
 func TestWriteEmptyTextEnvVarWritesNothing(t *testing.T) {
@@ -127,11 +145,32 @@ func TestWriteEmptyTextEnvVarWritesNothing(t *testing.T) {
 	tmp := t.TempDir()
 	path := filepath.Join(tmp, "out.txt")
 
-	_, stderr, code := runBinary(t, bin, os.Environ(), "write", path)
+	stdout, stderr, code := runBinary(t, bin, os.Environ(), "write", path)
 	if code != 0 {
 		t.Fatalf("exit code = %d, stderr = %s", code, stderr)
 	}
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		t.Errorf("expected %s not to exist, stat err = %v", path, err)
+	}
+	if want := "Clipboard is empty."; decodeMessage(t, stdout) != want {
+		t.Errorf("message = %q, want %q", decodeMessage(t, stdout), want)
+	}
+}
+
+func TestWriteFailurePrintsFailureMessage(t *testing.T) {
+	bin := buildBinary(t)
+	tmp := t.TempDir()
+	// blocker is a file, not a directory, so the write's parent-dir creation
+	// fails.
+	blocker := filepath.Join(tmp, "blocker")
+	if err := os.WriteFile(blocker, []byte("x"), 0o644); err != nil {
+		t.Fatalf("setup: %v", err)
+	}
+	path := filepath.Join(blocker, "out.txt")
+	env := append(os.Environ(), "text=content")
+
+	stdout, _, _ := runBinary(t, bin, env, "write", path)
+	if want := "Failed to save out.txt"; decodeMessage(t, stdout) != want {
+		t.Errorf("message = %q, want %q", decodeMessage(t, stdout), want)
 	}
 }
