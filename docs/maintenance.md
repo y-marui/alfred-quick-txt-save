@@ -1,63 +1,53 @@
-# Docs Maintenance
+# Maintenance Prompts
 
-ローカル LLM で `docs/` ファイルをメンテナンスするためのプロンプト集。
+Prompts for a local LLM (read-only) to draft updates to `docs/` files. The
+primary AI reviews and verifies against real files before saving anything.
 
----
-
-## docs/architecture.md を更新する
+## Update docs/architecture.md
 
 ```
-このプロジェクトの docs/architecture.md を更新してください。
+Review this project's directory structure and entry points.
 
-手順：
-1. ディレクトリ構造を確認する: ls -R cmd/ internal/ workflow/
-2. 主要ファイルを読む（cmd/quick-txt-save-alfred/main.go、internal/quicksavecmd/quicksavecmd.go 等）
-3. 既存の docs/architecture.md を読む（存在する場合）
-4. 以下のフォーマットで docs/architecture.md を上書き保存する:
+Steps:
+1. List top-level directories and their purpose
+2. Identify entry points (main packages, executables)
+3. List key external dependencies (from go.mod)
+4. Propose an update to docs/architecture.md following this format:
 
 # Architecture
 
 ## Overview
-<!-- プロジェクト全体像を3行以内で記述 -->
+<!-- 3 lines max -->
 
 ## Entry Points
-- `パス/ファイル` — 説明
+- `path/file` — description
 
 ## Directory Structure
-| ディレクトリ | 役割 |
+| Directory | Role |
 |---|---|
-| `internal/quicksave/` | ... |
 
 ## Key Dependencies
-| ライブラリ / モジュール | 用途 |
+| Library / Module | Purpose |
 |---|---|
-| `go.mod` 参照 | ... |
 
-注意：ファイルレベルの詳細は記載しない（file-map.md に委譲）。主要な依存のみ列挙する。
+Note: keep Overview to 3 lines max. Don't list file-level detail (that's
+file-map.md's job). List only key dependencies, not every one.
 ```
 
----
-
-## docs/file-map.md を更新する
+## Update docs/file-map.md
 
 ```
-このプロジェクトの docs/file-map.md を更新してください。
-
-手順：
-1. 最近変更されたファイルを確認する: git diff --name-only HEAD~5 HEAD
-2. 変更があったファイルと関連ファイルを読む
-3. 既存の docs/file-map.md を読む
-4. 以下のフォーマットで docs/file-map.md を上書き保存する（未探索ファイルは記載しない）:
+For the files touched in this session, propose additions to docs/file-map.md
+following this format:
 
 # File Map
 
-_最終更新: YYYY-MM-DD_
+_Last updated: YYYY-MM-DD_
 
-## [モジュール / 機能名]
-| ファイル | 役割 | 主な依存先 |
+## [Module / Feature Name]
+| File | Role | Key Dependencies |
 |---|---|---|
-| `internal/foo/foo.go` | 説明 | `internal/bar` |
 
-注意：全ファイルを網羅しなくてよい。AI が参照・編集したファイルを順次追記する。
-更新のたびに「最終更新」日付を更新すること。
+Note: don't try to cover every file — only ones actually read or edited this
+session. Don't list unexplored files. Update the "Last updated" date.
 ```
