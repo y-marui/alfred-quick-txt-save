@@ -22,9 +22,11 @@
 
 ## Usage
 
+`save` キーワードで、クリップボードのテキストをファイルに保存します。
+
 ### Save clipboard text
 
-テキストをクリップボードにコピーし、Alfred で `save` と入力して Enter を押します。
+テキストをクリップボードにコピーし、Alfred で `save` と入力します。
 
 ```
 save              -> ~/Downloads/quick_save_20260326_143012.txt
@@ -32,9 +34,7 @@ save notes        -> ~/Downloads/notes.txt
 save notes.md     -> ~/Downloads/notes.md
 ```
 
-| キー | 操作 |
-|---|---|
-| Enter | 表示されたパスにクリップボードを保存 |
+* <kbd>↩︎</kbd> 表示されたパスにクリップボードを保存
 
 各結果の2行目に保存先フルパスが表示されます。
 保存ディレクトリが存在しない場合は自動的に作成されます。
