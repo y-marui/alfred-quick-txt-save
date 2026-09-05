@@ -8,10 +8,13 @@
 //	write <path>      — the Run Script action after Enter; writes the text
 //	                    carried in the $text env var (an Arguments and
 //	                    Variables node sets it to Alfred's {clipboard}
-//	                    placeholder) to path and posts a notification
+//	                    placeholder) to path and prints the outcome as an
+//	                    Alfred workflow variable for the downstream native
+//	                    Post Notification node to display
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -63,9 +66,28 @@ func runWrite() {
 		os.Exit(1)
 	}
 	text := os.Getenv("text")
-	if _, err := quicksave.SaveText(os.Args[2], text); err != nil {
+	_, message, err := quicksave.SaveText(os.Args[2], text)
+	if err != nil {
 		fmt.Fprintln(os.Stderr, "quick-txt-save-alfred:", err)
-		os.Exit(1)
+	}
+	writeVariables(map[string]string{"message": message})
+}
+
+// writeVariables prints Alfred's workflow-variables JSON envelope
+// (https://www.alfredapp.com/help/workflows/advanced/variables/) to stdout.
+// A Run Script action has no way to branch a downstream connection on its
+// own exit code, but any node wired after it — here, a native Post
+// Notification node whose text is "{message}" — can read a variable set
+// this way regardless of whether the write succeeded.
+func writeVariables(vars map[string]string) {
+	payload := struct {
+		Alfredworkflow struct {
+			Variables map[string]string `json:"variables"`
+		} `json:"alfredworkflow"`
+	}{}
+	payload.Alfredworkflow.Variables = vars
+	if err := json.NewEncoder(os.Stdout).Encode(payload); err != nil {
+		fmt.Fprintln(os.Stderr, "quick-txt-save-alfred: writing variables:", err)
 	}
 }
 
