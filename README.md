@@ -22,9 +22,11 @@ Save clipboard or selected text to a .txt file with one keystroke.
 
 ## Usage
 
+Save the clipboard's text to a file via the `save` keyword.
+
 ### Save clipboard text
 
-Copy text to your clipboard, then type `save` in Alfred and press Enter.
+Copy text to your clipboard, then type `save` in Alfred.
 
 ```
 save              -> ~/Downloads/quick_save_20260326_143012.txt
@@ -32,9 +34,7 @@ save notes        -> ~/Downloads/notes.txt
 save notes.md     -> ~/Downloads/notes.md
 ```
 
-| Key | Action |
-|---|---|
-| Enter | Save clipboard to the shown path |
+* <kbd>↩︎</kbd> Save the clipboard to the shown path
 
 The second line under each result shows the full destination path.
 The save directory is created automatically if it does not exist.
