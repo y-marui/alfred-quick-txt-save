@@ -24,6 +24,8 @@ Save clipboard or selected text to a .txt file with one keystroke.
 
 Save the clipboard's text to a file via the `save` keyword.
 
+![save notes.md result](images/save.png)
+
 ### Save clipboard text
 
 Copy text to your clipboard, then type `save` in Alfred.

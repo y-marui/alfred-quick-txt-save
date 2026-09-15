@@ -30,7 +30,7 @@ that submission is not blocked on our side whenever that step happens.
 | User Configuration over environment variables | ✅ Done | Save Directory / Filename Prefix / Default Extension are all in Alfred's Configuration Builder (`workflow/info.plist`'s `userconfigurationconfig`), not environment variables |
 | English instructions in About/README | ✅ Done | `README.md` is the reference (English) version; `README-jp.md` is canonical |
 | README follows Gallery style guide | ✅ Done | `## Usage` opens with "via the `save` keyword" phrasing; the Enter action is a `<kbd>` bullet, not a table |
-| Screenshots (full Alfred window, shadow, no background) | ❌ Missing | No `images/` directory exists; needs a real Alfred window capture, which this repository's automation cannot produce. Tracked in [#38](https://github.com/y-marui/alfred-quick-txt-save/issues/38) |
+| Screenshots (full Alfred window, shadow, no background) | ✅ Done | `images/save.png`, real window capture (rounded corners + drop shadow, transparent background) |
 
 ## Out of scope here
 
