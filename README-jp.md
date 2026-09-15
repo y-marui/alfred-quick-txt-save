@@ -24,6 +24,8 @@
 
 `save` キーワードで、クリップボードのテキストをファイルに保存します。
 
+![save notes.md の実行結果](images/save.png)
+
 ### Save clipboard text
 
 テキストをクリップボードにコピーし、Alfred で `save` と入力します。
