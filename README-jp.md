@@ -41,6 +41,11 @@ save notes.md     -> ~/Downloads/notes.md
 各結果の2行目に保存先フルパスが表示されます。
 保存ディレクトリが存在しない場合は自動的に作成されます。
 
+### Save selected text
+
+任意のアプリでテキストを選択し、Alfred の Universal Actions から **Save Text** を選びます。
+保存先ディレクトリに自動生成ファイル名（`{prefix}_{YYYYMMDD_HHMMSS}{ext}`）で保存されます。
+
 ### Configuration
 
 Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** を開きます。
