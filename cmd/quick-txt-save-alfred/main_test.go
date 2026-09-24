@@ -106,15 +106,18 @@ func TestMissingSubcommandPrintsErrorJSON(t *testing.T) {
 	}
 }
 
-func TestWriteRequiresPathArgument(t *testing.T) {
+func TestWriteWithoutPathUsesGeneratedName(t *testing.T) {
 	bin := buildBinary(t)
+	tmp := t.TempDir()
+	env := append(os.Environ(), "save_dir="+tmp, "text=selected text")
 
-	_, stderr, code := runBinary(t, bin, nil, "write")
-	if code == 0 {
-		t.Error("exit code = 0, want non-zero")
+	_, stderr, code := runBinary(t, bin, env, "write")
+	if code != 0 {
+		t.Fatalf("exit code = %d, stderr = %s", code, stderr)
 	}
-	if stderr == "" {
-		t.Error("expected a stderr message when path argument is missing")
+	matches, _ := filepath.Glob(filepath.Join(tmp, "quick_save_*.txt"))
+	if len(matches) != 1 {
+		t.Fatalf("got %v, want exactly one quick_save_*.txt", matches)
 	}
 }
 

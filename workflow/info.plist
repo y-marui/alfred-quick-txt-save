@@ -6,6 +6,32 @@
 	<string>com.y-marui.alfred-quick-txt-save</string>
 	<key>connections</key>
 	<dict>
+		<key>C7D8E9F0-A1B2-4345-8678-9ABCDEF01234</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>E5F6A7B8-C9D0-4123-8456-789012345678</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>E5F6A7B8-C9D0-4123-8456-789012345678</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B3C4D5E6-F7A8-9012-BCDE-F34567890123</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>A2B3C4D5-E6F7-8901-ABCD-EF2345678901</key>
 		<array>
 			<dict>
@@ -58,6 +84,47 @@
 	<string>Quick Text Save</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>acceptsfiles</key>
+				<false/>
+				<key>acceptsmulti</key>
+				<integer>0</integer>
+				<key>acceptstext</key>
+				<true/>
+				<key>acceptsurls</key>
+				<false/>
+				<key>name</key>
+				<string>Save Text</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.universalaction</string>
+			<key>uid</key>
+			<string>C7D8E9F0-A1B2-4345-8678-9ABCDEF01234</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string></string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict>
+					<key>text</key>
+					<string>{query}</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>E5F6A7B8-C9D0-4123-8456-789012345678</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -180,6 +247,8 @@
   save notes.md     → ~/Downloads/notes.md
 
 Copy text to your clipboard, type "save" in Alfred, and press Enter.
+To save selected text instead, choose "Save Text" in Alfred's Universal Actions
+(saved with an auto-generated filename).
 If a file with the same name already exists, (1), (2), … is appended automatically.
 
 ## Configuration

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- "Save Text" Universal Action: saves the selected text with an auto-generated filename.
+  The `write` subcommand now accepts an empty path and resolves it itself.
+
 ## [1.0.0] - 2026-09-15
 
 ### Added

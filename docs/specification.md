@@ -25,6 +25,17 @@ Functional specification and behavior definition for alfred-quick-txt-save.
   the `text` variable (via an Arguments and Variables node using Alfred's `{clipboard}`
   placeholder — the binary itself never reads the pasteboard).
 
+### Universal Action — Save Text
+
+**Trigger:** Select text, open Alfred's Universal Actions, and choose **Save Text**.
+
+- Saves the selected text with an auto-generated filename (same rule as `save` with no name)
+  in the save directory. There is no filename prompt; use `save <name>` to choose one.
+- Text only (files and URLs are not accepted). The selected text is passed to the `write`
+  subcommand as the `text` variable (Arguments and Variables node, `{query}`), with no path
+  argument; `write` then resolves the path itself. Empty-text, collision-avoidance, and
+  notification behavior are identical to `save`.
+
 ---
 
 ## Configuration
@@ -85,6 +96,16 @@ cmd/quick-txt-save-alfred write <path>
   │
   ▼
 internal/quicksave.SaveText()     ← writes file, sends macOS notification (or reports failure)
+```
+
+Universal Action path (no Script Filter step):
+
+```
+Alfred (Universal Action trigger "Save Text")  → selected text as {query}
+  ▼
+Alfred (Arguments and Variables node)  ← sets text = {query}, empty argument
+  ▼
+cmd/quick-txt-save-alfred write        ← no path arg; SaveText("") resolves a generated name
 ```
 
 ## Error Handling

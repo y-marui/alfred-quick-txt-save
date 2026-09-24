@@ -41,6 +41,11 @@ save notes.md     -> ~/Downloads/notes.md
 The second line under each result shows the full destination path.
 The save directory is created automatically if it does not exist.
 
+### Save selected text
+
+Select text in any app, open Alfred's Universal Actions, and choose **Save Text**.
+The text is saved with an auto-generated filename (`{prefix}_{YYYYMMDD_HHMMSS}{ext}`) in the save directory.
+
 ### Configuration
 
 Open Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow**.

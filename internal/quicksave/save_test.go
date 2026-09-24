@@ -85,3 +85,20 @@ func TestSaveTextWriteFailureReturnsError(t *testing.T) {
 		t.Errorf("message = %q, want %q", message, want)
 	}
 }
+
+func TestSaveTextEmptyPathUsesGeneratedName(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("save_dir", dir)
+
+	wrote, _, err := SaveText("", "selected")
+	if err != nil {
+		t.Fatalf("SaveText: %v", err)
+	}
+	if !wrote {
+		t.Fatal("wrote = false, want true")
+	}
+	matches, _ := filepath.Glob(filepath.Join(dir, "quick_save_*.txt"))
+	if len(matches) != 1 {
+		t.Fatalf("got %v, want exactly one quick_save_*.txt", matches)
+	}
+}

@@ -5,7 +5,8 @@
 //
 //	list [filename]  — the "save" Script Filter keyword node; previews the
 //	                    resolved destination path
-//	write <path>      — the Run Script action after Enter; writes the text
+//	write [path]      — the Run Script action after Enter (or the Universal
+//	                    Action, which passes no path); writes the text
 //	                    carried in the $text env var (an Arguments and
 //	                    Variables node sets it to Alfred's {clipboard}
 //	                    placeholder) to path and prints the outcome as an
@@ -61,12 +62,12 @@ func dispatch(filename string) (resp scriptfilter.Response) {
 }
 
 func runWrite() {
-	if len(os.Args) < 3 || os.Args[2] == "" {
-		fmt.Fprintln(os.Stderr, "quick-txt-save-alfred: write: path argument is required")
-		os.Exit(1)
+	path := ""
+	if len(os.Args) > 2 {
+		path = os.Args[2]
 	}
 	text := os.Getenv("text")
-	_, message, err := quicksave.SaveText(os.Args[2], text)
+	_, message, err := quicksave.SaveText(path, text)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "quick-txt-save-alfred:", err)
 	}

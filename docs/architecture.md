@@ -9,7 +9,10 @@ binary `workflow/info.plist` invokes. The "save" Script Filter node runs it as
 `{clipboard}` placeholder — the binary itself never reads the pasteboard. The binary then
 runs again as `write <path>` (a Run Script action), reading `text` from the environment,
 writing it to `path`, and printing Alfred's workflow-variables JSON envelope with a `message`
-describing the outcome. A native Post Notification node downstream, reached unconditionally,
+describing the outcome. A second entry point, the "Save Text" Universal Action trigger,
+feeds the selected text into its own Arguments and Variables node (`text` = `{query}`, empty
+argument) and joins the same `write` step with no path; `SaveText` then resolves an
+auto-generated filename. A native Post Notification node downstream, reached unconditionally,
 displays `{message}` — the binary itself never calls `osascript`.
 
 ## Entry Points
@@ -48,7 +51,8 @@ cmd/quick-txt-save-alfred/main.go   ← Alfred boundary; argv dispatch only
   │                    ▼
   │              internal/quicksave.ResolvePath()/.SaveDir()
   │
-  └─ write <path> ─────┐   (text = $text env var, set upstream from {clipboard})
+  └─ write [path] ─────┐   (text = $text env var, set upstream from {clipboard}, or {query}
+                        │    for the Universal Action, which passes no path)
                         ▼
                   internal/quicksave.SaveText()  ← writes file, returns outcome message
                         │

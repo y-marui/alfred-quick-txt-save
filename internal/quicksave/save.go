@@ -15,8 +15,14 @@ import (
 //     stderr isn't shown to the user, so this is the only way a write
 //     failure (e.g. an unwritable save directory) becomes visible.
 //
+// An empty path resolves to an auto-generated filename in the save
+// directory, for callers (the Universal Action) that skip the Script Filter.
+//
 // Returns whether a file was written.
 func SaveText(path, text string) (bool, string, error) {
+	if path == "" {
+		path = ResolvePath("")
+	}
 	if text == "" {
 		return false, "Clipboard is empty.", nil
 	}
