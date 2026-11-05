@@ -1,6 +1,6 @@
 # Alfred Quick Text Save
 
-> **これは日本語版（正本）です。**
+> **このファイルは正本（日本語版）です。**
 > 英語版（参照）は [README.md](README.md) を参照してください。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -19,6 +19,19 @@
 
 1. [Releases](https://github.com/y-marui/alfred-quick-txt-save/releases) から最新の `.alfredworkflow` をダウンロード
 2. ダブルクリックして Alfred にインストール
+
+## Project Structure
+
+```
+alfred-quick-txt-save/
+├── cmd/
+│   └── quick-txt-save-alfred/  # Alfred が実行するバイナリ
+├── internal/
+│   ├── quicksave/       # 保存先パス解決・テキストのファイル書き込みロジック（コア）
+│   ├── quicksavecmd/    # Script Filter レスポンス生成
+│   └── scriptfilter/    # Alfred Script Filter JSON 型
+└── workflow/            # Alfred パッケージ（info.plist, icon.png）
+```
 
 ## Usage
 
@@ -56,6 +69,14 @@ Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** 
 | Filename Prefix | 自動生成ファイル名のプレフィックス | `quick_save` |
 | Default Extension | 拡張子未指定時に付加される拡張子 | `.txt` |
 
+## Documentation
+
+| ドキュメント | 内容 |
+|---|---|
+| [DEVELOPING.md](DEVELOPING.md) | ビルド・テスト・リント・リリース・AI ワークフロー |
+| [docs/architecture.md](docs/architecture.md) | レイヤー設計とデータフロー |
+| [docs/specification.md](docs/specification.md) | コマンド・設定・動作仕様 |
+
 ## Notes
 
 **保存されない** — `save` を実行する前にクリップボードが空でないことを確認してください。
@@ -65,31 +86,9 @@ Alfred Preferences → Workflows → Quick Text Save → **Configure Workflow** 
 **ワークフローが反応しない** — Alfred のデバッガー（⌘D）を開くか、
 `~/Library/Logs/Alfred/Workflow/<bundle-id>.log` を確認してください。
 
-## Project Structure
-
-```
-alfred-quick-txt-save/
-├── cmd/
-│   └── quick-txt-save-alfred/  # Alfred が実行するバイナリ
-├── internal/
-│   ├── quicksave/       # 保存先パス解決・テキストのファイル書き込みロジック（コア）
-│   ├── quicksavecmd/    # Script Filter レスポンス生成
-│   └── scriptfilter/    # Alfred Script Filter JSON 型
-└── workflow/            # Alfred パッケージ（info.plist, icon.png）
-```
-
-## Documentation
-
-| ドキュメント | 内容 |
-|---|---|
-| [DEVELOPING.md](DEVELOPING.md) | ビルド・テスト・リント・リリース・AI ワークフロー |
-| [docs/architecture.md](docs/architecture.md) | レイヤー設計とデータフロー |
-| [docs/specification.md](docs/specification.md) | コマンド・設定・動作仕様 |
-
 ## License
 
 MIT — [LICENSE](LICENSE) を参照
 
 ---
-
-*この文書には英語版（参照版）[README.md](README.md) があります。編集時は同一コミットで更新してください。*
+*この文書には英語版 [README.md](README.md) があります。編集時は同一コミットで更新してください。*
