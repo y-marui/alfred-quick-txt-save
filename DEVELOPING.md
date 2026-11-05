@@ -180,18 +180,6 @@ Copilot works best for:
 - Completing repetitive boilerplate
 - Suggesting Go idioms
 
-### Gemini CLI (documentation)
-
-Use Gemini CLI for:
-- Generating/updating `README.md`
-- Writing `CHANGELOG.md` entries from git log
-
-Example:
-```bash
-gemini "Update README.md based on the current source code in cmd/ and internal/"
-gemini "Generate CHANGELOG entry for commits since v1.0.0"
-```
-
 ## Security
 
 ### Automated Checks
