@@ -1,7 +1,7 @@
 # Alfred Quick Text Save
 
-> **This is the English (reference) version.**
-> For the Japanese canonical version, see [README-jp.md](README-jp.md).
+> **This is the reference (English) version.**
+> The canonical (Japanese) version is [README-jp.md](README-jp.md).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/y-marui/alfred-quick-txt-save/actions/workflows/ci.yml/badge.svg)](https://github.com/y-marui/alfred-quick-txt-save/actions/workflows/ci.yml)
@@ -19,6 +19,19 @@ Save clipboard or selected text to a .txt file with one keystroke.
 
 1. Download the latest `.alfredworkflow` from [Releases](https://github.com/y-marui/alfred-quick-txt-save/releases)
 2. Double-click to install in Alfred
+
+## Project Structure
+
+```
+alfred-quick-txt-save/
+├── cmd/
+│   └── quick-txt-save-alfred/  # The binary Alfred invokes
+├── internal/
+│   ├── quicksave/       # Path resolution and text-to-file write logic (core)
+│   ├── quicksavecmd/    # Script Filter response building
+│   └── scriptfilter/    # Alfred Script Filter JSON types
+└── workflow/            # Alfred package (info.plist, icon.png)
+```
 
 ## Usage
 
@@ -56,6 +69,14 @@ Open Alfred Preferences → Workflows → Quick Text Save → **Configure Workfl
 | Filename Prefix | Prefix for auto-generated filenames | `quick_save` |
 | Default Extension | Extension appended when none is specified | `.txt` |
 
+## Documentation
+
+| Document | Description |
+|---|---|
+| [DEVELOPING.md](DEVELOPING.md) | Build, test, lint, release, and AI workflow |
+| [docs/architecture.md](docs/architecture.md) | Layer design and data flow |
+| [docs/specification.md](docs/specification.md) | Commands, config, and behavior |
+
 ## Notes
 
 **Nothing was saved** — Check that the clipboard is not empty before running `save`.
@@ -65,31 +86,9 @@ Open Alfred Preferences → Workflows → Quick Text Save → **Configure Workfl
 **Workflow not responding** — Open Alfred's debugger (⌘D) or check
 `~/Library/Logs/Alfred/Workflow/<bundle-id>.log`.
 
-## Project Structure
-
-```
-alfred-quick-txt-save/
-├── cmd/
-│   └── quick-txt-save-alfred/  # The binary Alfred invokes
-├── internal/
-│   ├── quicksave/       # Path resolution and text-to-file write logic (core)
-│   ├── quicksavecmd/    # Script Filter response building
-│   └── scriptfilter/    # Alfred Script Filter JSON types
-└── workflow/            # Alfred package (info.plist, icon.png)
-```
-
-## Documentation
-
-| Document | Description |
-|---|---|
-| [DEVELOPING.md](DEVELOPING.md) | Build, test, lint, release, and AI workflow |
-| [docs/architecture.md](docs/architecture.md) | Layer design and data flow |
-| [docs/specification.md](docs/specification.md) | Commands, config, and behavior |
-
 ## License
 
 MIT — see [LICENSE](LICENSE)
 
 ---
-
-*This is the reference (English) version. The canonical Japanese version is [README-jp.md](README-jp.md). Update both files in the same commit.*
+*This document has a Japanese canonical version [README-jp.md](README-jp.md). Update both in the same commit when editing.*

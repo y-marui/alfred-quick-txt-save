@@ -75,7 +75,7 @@ arbitrary absolute path outside that sandbox. This workflow must write to whatev
 the user configures via `save_dir` (any folder, anywhere), so the write stays in `SaveText`.
 If this is ever re-verified in Alfred directly (build a throwaway Write File node, point it
 at e.g. `~/Desktop/test.txt`, confirm it actually lands there), this constraint may no longer
-apply — see [`docs/alfred-workflow-notes/workflow-object-schema.md`](../../docs/alfred-workflow-notes/workflow-object-schema.md)'s
+apply — see [`docs/alfred-workflow-notes/workflow-object-schema.md`](alfred-workflow-notes/workflow-object-schema.md)'s
 Write File entry, which carries the same open question for every project in this ecosystem.
 
 ## Why the notification moved to native Alfred
